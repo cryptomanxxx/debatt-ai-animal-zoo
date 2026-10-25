@@ -15,7 +15,7 @@
     .character-list{display:grid;gap:12px}.character{border:1px solid var(--line);background:#ffffff0b;border-radius:20px;padding:14px;display:flex;gap:15px;align-items:center;text-align:left;color:var(--soft);transition:transform .2s,background .2s,border-color .2s;min-height:95px}.character:hover{transform:translateY(-2px);background:#ffffff13}.character[aria-pressed="true"]{border-color:#cffa86;background:#bfe78414;box-shadow:0 0 0 1px #cffa8660}.avatar{border-radius:16px;flex:none;width:66px;height:66px;display:grid;place-items:center;overflow:hidden}.fox-thumb{background:linear-gradient(130deg,#edac70,#d36c4c)}.duck-thumb{background:linear-gradient(130deg,#cbe5ac,#86bfc4)}.avatar svg{width:62px;height:62px}.character-copy{display:grid;gap:4px}.character-copy b{font-size:18px}.character-copy span{color:#aab6c6;font-size:12px}.mini-arrow{margin-left:auto;font-size:24px;color:#dbefb0}
     .side-note{border:1px solid #ffffff15;border-radius:20px;padding:20px;background:#ffffff07;margin-top:21px}.side-note h3{font-size:14px;margin:0 0 10px}.side-note p{font-size:12px;line-height:1.8;color:#9faebf;margin:0}.side-note .facts{margin-top:14px;display:flex;gap:7px;flex-wrap:wrap}.tag{border:1px solid #ffffff1e;border-radius:7px;padding:7px 9px;color:#c3cbd4;font-size:11px}
     .stage-card{border-radius:27px;overflow:hidden;border:1px solid #ffffff27;background:linear-gradient(145deg,#27364a,#171f33);box-shadow:0 24px 70px #070d1d70}.stage{height:390px;position:relative;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 65%,#78baa073,transparent 58%),linear-gradient(#314969,#1a3946 68%,#1f413e)}.stage.duck{background:radial-gradient(ellipse at 50% 76%,#8fcec487,transparent 56%),linear-gradient(#5b839b,#3d7180 68%,#2d6671)}.sky-dot{position:absolute;width:5px;height:5px;background:#f1ffc9;border-radius:50%;box-shadow:0 0 12px #e8ffa0;opacity:.8}.sky-dot.a{top:20%;left:17%}.sky-dot.b{top:13%;right:24%;width:3px;height:3px}.sky-dot.c{top:37%;right:12%;width:3px;height:3px}.hill{position:absolute;bottom:-82px;height:170px;width:115%;border-radius:50%}.hill.one{left:-33%;background:#1f5d54}.hill.two{right:-40%;background:#1b4a43;bottom:-93px}.duck .hill.one{background:#246d72}.duck .hill.two{background:#275a68}.pond{position:absolute;bottom:28px;height:36px;width:210px;border-radius:50%;background:#b1e8de33;filter:blur(1px)}.fox .pond{display:none}
-    .hero-svg{height:min(320px,86%);max-width:80%;position:relative;z-index:2;filter:drop-shadow(0 25px 18px #08101a60);transform-origin:50% 85%;animation:float 4s ease-in-out infinite}.stage.is-speaking .hero-svg{animation:float 1s ease-in-out infinite}.stage.is-speaking .talk{transform-box:fill-box;transform-origin:center;animation:chatter .16s infinite alternate}.stage:not(.is-speaking) .talk{transform:scaleY(.65)}.stage:not(.is-speaking) .fox-mouth,.stage:not(.is-speaking) .duck-mouth{opacity:.9}@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-8px) rotate(1deg)}}@keyframes chatter{from{transform:scaleY(.3)}to{transform:scaleY(1.2)}}.character-name{position:absolute;left:22px;top:22px;z-index:3;background:#13202b83;border:1px solid #ffffff35;padding:9px 13px;border-radius:12px;font-size:12px;font-weight:750;backdrop-filter:blur(8px)}.sound-orbit{position:absolute;z-index:1;width:300px;height:300px;border:1px solid #ffffff18;border-radius:50%}.sound-orbit.second{width:360px;height:360px}.stage.is-speaking .sound-orbit{animation:pulse 1s infinite alternate}@keyframes pulse{to{transform:scale(1.08);border-color:#e9fac45a}}
+    .hero-svg{height:min(320px,86%);max-width:80%;position:relative;z-index:2;filter:drop-shadow(0 25px 18px #08101a60);transform-origin:50% 85%;animation:float 4s ease-in-out infinite}.stage.is-speaking .hero-svg{animation:float 2.3s ease-in-out infinite}.stage.is-listening .hero-svg{animation:listen 3.4s ease-in-out infinite}.stage.is-thinking .hero-svg{animation:think 2.9s ease-in-out infinite}.talk{transform-box:fill-box;transform-origin:center top;transform:scaleY(var(--mouth-open,.16));transition:transform 65ms ease-out}.stage.is-previewing .talk{animation:chatter .17s infinite alternate}.eyelid{transform-box:fill-box;transform-origin:center;transform:scaleY(0)}.hero-svg.is-blinking .eyelid{animation:blink .18s ease-in-out}.fox-ear{transform-box:fill-box;transform-origin:center bottom}.stage.is-listening .fox-ear.left{animation:earLeft 2.6s ease-in-out infinite}.stage.is-listening .fox-ear.right{animation:earRight 3.1s ease-in-out infinite}@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-8px) rotate(1deg)}}@keyframes listen{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-4px) rotate(3deg)}}@keyframes think{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(-5deg) translateY(-2px)}}@keyframes blink{0%,100%{transform:scaleY(0)}45%,55%{transform:scaleY(1)}}@keyframes earLeft{0%,100%{transform:rotate(0)}45%{transform:rotate(-7deg)}}@keyframes earRight{0%,100%{transform:rotate(0)}55%{transform:rotate(6deg)}}@keyframes chatter{from{transform:scaleY(.2)}to{transform:scaleY(1.15)}}.character-name{position:absolute;left:22px;top:22px;z-index:3;background:#13202b83;border:1px solid #ffffff35;padding:9px 13px;border-radius:12px;font-size:12px;font-weight:750;backdrop-filter:blur(8px)}.sound-orbit{position:absolute;z-index:1;width:300px;height:300px;border:1px solid #ffffff18;border-radius:50%}.sound-orbit.second{width:360px;height:360px}.stage.is-speaking .sound-orbit{animation:pulse 1s infinite alternate}@keyframes pulse{to{transform:scale(1.08);border-color:#e9fac45a}}
     .controls{padding:22px 24px 24px}.statusline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}.status{font-size:13px;color:#e0e5ea;display:flex;align-items:center;gap:8px}.status .dot{background:#f3bd77;box-shadow:none}.status.active .dot{background:var(--lime);box-shadow:0 0 10px #c9f77b}.timer{font-variant-numeric:tabular-nums;font-size:12px;color:#b7c4cb;border:1px solid #ffffff28;border-radius:99px;padding:6px 11px}.buttons{display:flex;flex-wrap:wrap;gap:10px}.primary{flex:1;min-width:185px;border:0;background:var(--lime);color:#182c31;border-radius:14px;padding:14px 18px;font-weight:800;display:flex;justify-content:center;align-items:center;gap:9px}.secondary{border:1px solid #ffffff3b;background:#ffffff0c;color:#fff;border-radius:14px;padding:13px 16px;font-weight:730}.danger{border-color:#feaa9880;color:#ffd8cd;background:#aa3d301c}.instructions{font-size:12px;color:#a2b1bc;margin:15px 0 0;line-height:1.6}.message{border-radius:12px;padding:12px 14px;margin:0 0 14px;background:#e7ad7130;color:#ffe7c9;font-size:12px;line-height:1.6}.message.hidden{display:none}
     .secret-box{margin:0 0 17px;padding:15px;border-radius:15px;border:1px solid #cffa865b;background:#b8df9c10}.secret-box label{display:block;font-size:13px;font-weight:750;margin-bottom:7px}.secret-box input{width:100%;background:#0b1727;color:#fff;border:1px solid #ffffff48;border-radius:10px;padding:12px;font:inherit;outline:none}.secret-box input:focus{border-color:var(--lime)}.secret-box p{font-size:11px;color:#bdcccd;line-height:1.6;margin:8px 0 0}.chat{margin-top:20px;background:#ffffff09;border:1px solid var(--line);padding:22px;border-radius:23px}.chat-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.chat-head h2{margin:0;font-size:16px}.chat-head span{font-size:11px;color:#98aab8}.chat-log{max-height:160px;min-height:70px;overflow:auto;display:grid;gap:8px;margin-bottom:13px}.chat-log p{margin:0;border-left:2px solid #ffffff2c;padding:5px 9px;color:#cad4da;font-size:12px;line-height:1.5}.chat-log p strong{color:#e9f2ee}.chat-form{display:flex;gap:8px}.chat-form input{flex:1;min-width:0;border:1px solid #ffffff2d;background:#0c1725a0;color:#fff;padding:12px 13px;border-radius:12px;outline:none}.chat-form input:focus{border-color:#cffa86}.chat-form button{border:0;background:#f5b37d;color:#242534;border-radius:12px;font-weight:800;padding:10px 18px}.stats{display:flex;gap:16px;flex-wrap:wrap;color:#a0afbf;font-size:11px;margin-top:16px}.stats b{color:#e7f0ec}.footer{margin:28px 0 0;text-align:center;font-size:11px;color:#7d8f9f}
     @media(max-width:830px){.layout{grid-template-columns:1fr}.character-list{grid-template-columns:1fr 1fr}.side-note{display:none}.stage{height:330px}.page{padding:20px 18px 36px}.topbar{margin-bottom:28px}}
@@ -51,9 +51,9 @@
             <ellipse cx="171" cy="327" rx="75" ry="17" fill="#112e304e"/>
             <path d="M123 247Q88 284 94 327Q168 349 239 325Q251 284 217 245Z" fill="#dd753e"/><path d="M155 254Q169 284 183 255L200 327H140Z" fill="#f4d9b7"/>
             <path d="M71 163 75 32l84 66Q173 88 185 96l79-65 9 132-26 93-78 40-79-42Z" fill="#ed8648" stroke="#be6438" stroke-width="4" stroke-linejoin="round"/>
-            <path d="M85 66 135 110 87 149Z" fill="#8e4750"/><path d="M257 65 212 112 261 149Z" fill="#8e4750"/>
+            <path class="fox-ear left" d="M85 66 135 110 87 149Z" fill="#8e4750"/><path class="fox-ear right" d="M257 65 212 112 261 149Z" fill="#8e4750"/>
             <path d="M91 195Q117 233 169 238Q219 233 250 195L245 255 169 303 93 255Z" fill="#fff0d3"/>
-            <ellipse cx="134" cy="179" rx="13" ry="17" fill="#2a3440"/><ellipse cx="203" cy="179" rx="13" ry="17" fill="#2a3440"/><circle cx="139" cy="174" r="4" fill="#fff"/><circle cx="208" cy="174" r="4" fill="#fff"/>
+            <ellipse cx="134" cy="179" rx="13" ry="17" fill="#2a3440"/><ellipse cx="203" cy="179" rx="13" ry="17" fill="#2a3440"/><circle cx="139" cy="174" r="4" fill="#fff"/><circle cx="208" cy="174" r="4" fill="#fff"/><ellipse class="eyelid" cx="134" cy="179" rx="16" ry="20" fill="#ed8648"/><ellipse class="eyelid" cx="203" cy="179" rx="16" ry="20" fill="#ed8648"/>
             <ellipse cx="111" cy="211" rx="17" ry="9" fill="#e88971" opacity=".72"/><ellipse cx="228" cy="211" rx="17" ry="9" fill="#e88971" opacity=".72"/>
             <path d="M150 229Q169 216 188 229L169 245Z" fill="#473c45"/>
             <g class="talk"><path class="fox-mouth" d="M157 251Q170 267 183 251Q181 283 169 282Q159 281 157 251Z" fill="#60383d"/><ellipse cx="170" cy="274" rx="7" ry="4" fill="#eb9997"/></g>
@@ -65,7 +65,7 @@
             <path d="M120 280Q91 263 75 295Q67 315 96 323L135 311M218 277Q253 264 269 294Q269 320 241 324L205 308" fill="#ffeaab" stroke="#e0c46a" stroke-width="3"/>
             <ellipse cx="171" cy="166" rx="98" ry="107" fill="#ffebb2" stroke="#e9ce85" stroke-width="4"/>
             <path d="M144 79Q132 43 151 32Q160 48 170 57Q186 28 200 33Q198 62 188 77" fill="#ffebb2" stroke="#e9ce85" stroke-width="5" stroke-linejoin="round"/>
-            <ellipse cx="132" cy="166" rx="14" ry="18" fill="#324153"/><ellipse cx="211" cy="166" rx="14" ry="18" fill="#324153"/><circle cx="136" cy="161" r="5" fill="#fff"/><circle cx="216" cy="161" r="5" fill="#fff"/>
+            <ellipse cx="132" cy="166" rx="14" ry="18" fill="#324153"/><ellipse cx="211" cy="166" rx="14" ry="18" fill="#324153"/><circle cx="136" cy="161" r="5" fill="#fff"/><circle cx="216" cy="161" r="5" fill="#fff"/><ellipse class="eyelid" cx="132" cy="166" rx="18" ry="21" fill="#ffebb2"/><ellipse class="eyelid" cx="211" cy="166" rx="18" ry="21" fill="#ffebb2"/>
             <ellipse cx="104" cy="201" rx="20" ry="11" fill="#f6ac9a" opacity=".55"/><ellipse cx="240" cy="201" rx="20" ry="11" fill="#f6ac9a" opacity=".55"/>
             <path d="M120 206Q171 188 222 206Q215 233 170 236Q126 232 120 206Z" fill="#eea562"/>
             <g class="talk"><path class="duck-mouth" d="M131 231Q170 255 211 231Q206 265 170 269Q135 264 131 231Z" fill="#c76c52"/><ellipse cx="170" cy="260" rx="18" ry="5" fill="#eea092"/></g>
@@ -97,6 +97,7 @@
   let micPackets=0,micAudiblePackets=0,micLevel=0,micPeak=0,lastPacketAt=0,voiceActiveAt=0,micDiagnosticTimer=null,micPaused=false;
   let recognition=null,recognizing=false,recognizedThisTurn=false,transcriptionTimeout=null;
   let sources=[],nextPlay=0,playCount=0,expiresAt=0,clock=null,expiryTimer=null,lastInputAt=0,turns=0;
+  let outAnalyser=null,audioSegments=[],lipTimer=null,lipLevel=.16,blinkTimer=null;
   let failedStart=false,stopRequested=false,voiceSession=null;
   const tabs='BroadcastChannel' in window?new BroadcastChannel('debatt-ai-animal-zoo-private-lab'):null;
   if(tabs)tabs.onmessage=e=>{if(e.data?.type==='new-session'&&(connected||connecting))end('Ett nytt samtal öppnades i en annan flik.')};
@@ -134,8 +135,58 @@
   async function check(){try{const r=await fetch('/api/status',{cache:'no-store'});if(!r.ok)throw Error('Status saknas');const j=await r.json();configured=Boolean(j.ready);$('secret-box').hidden=configured;status(configured?'Gemini redo för privat test':'Ange din Gemini-nyckel för att testa');}catch{status('Kunde inte kontrollera servern');showError('Kontroll av AI-anslutningen misslyckades.')}}
   function b64(bytes){let s='';for(let i=0;i<bytes.length;i+=8192)s+=String.fromCharCode.apply(null,bytes.subarray(i,i+8192));return btoa(s)}
   function fromBase64(s){const binary=atob(s),out=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)out[i]=binary.charCodeAt(i);return out}
-  function clearSound(){for(const source of sources){try{source.stop()}catch{}}sources=[];playCount=0;nextPlay=0;$('stage').classList.remove('is-speaking')}
-  function playAudio(raw){if(!outCtx)return;const bytes=fromBase64(raw);if(bytes.byteLength<2)return;const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);const audio=outCtx.createBuffer(1,Math.floor(bytes.byteLength/2),24000);const arr=audio.getChannelData(0);for(let i=0;i<arr.length;i++)arr[i]=view.getInt16(i*2,true)/32768;const source=outCtx.createBufferSource();source.buffer=audio;source.connect(outCtx.destination);const when=Math.max(outCtx.currentTime+0.025,nextPlay||0);nextPlay=when+audio.duration;playCount++;sources.push(source);$('stage').classList.add('is-speaking');source.onended=()=>{sources=sources.filter(s=>s!==source);playCount=Math.max(0,playCount-1);if(!playCount)$('stage').classList.remove('is-speaking')};source.start(when)}
+  function setMouth(level){$('stage').style.setProperty('--mouth-open',String(level))}
+  function blink(){
+    const hero=$(animal==='fox'?'fox-hero':'duck-hero');
+    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      hero.classList.add('is-blinking');
+      setTimeout(()=>hero.classList.remove('is-blinking'),200);
+    }
+    blinkTimer=setTimeout(blink,2300+Math.random()*4200);
+  }
+  // Analyse the *played* Gemini PCM, not the microphone or merely queued audio chunks.
+  function updateLips(){
+    if(!outCtx||!outAnalyser)return;
+    const now=outCtx.currentTime;
+    audioSegments=audioSegments.filter(seg=>seg.end>now);
+    const playing=audioSegments.some(seg=>seg.start<=now&&now<seg.end);
+    const stage=$('stage');
+    stage.classList.toggle('is-speaking',playing);
+    stage.classList.toggle('is-listening',connected&&!playing);
+    stage.classList.toggle('is-thinking',connecting&&!playing);
+    let target=.16;
+    if(playing){
+      const wave=new Uint8Array(outAnalyser.fftSize);
+      outAnalyser.getByteTimeDomainData(wave);
+      let sum=0;
+      for(const v of wave){const sample=(v-128)/128;sum+=sample*sample}
+      const rms=Math.sqrt(sum/wave.length);
+      target=Math.min(1.35,Math.max(.16,rms*9));
+    }
+    lipLevel=lipLevel*.4+target*.6;
+    setMouth(lipLevel.toFixed(3));
+  }
+  function clearSound(){
+    for(const source of sources){try{source.stop()}catch{}}
+    sources=[];audioSegments=[];playCount=0;nextPlay=0;lipLevel=.16;
+    $('stage').classList.remove('is-speaking','is-thinking');
+    $('stage').classList.toggle('is-listening',connected);
+    setMouth(.16);
+  }
+  function playAudio(raw){
+    if(!outCtx||!outAnalyser)return;
+    const bytes=fromBase64(raw);if(bytes.byteLength<2)return;
+    const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
+    const audio=outCtx.createBuffer(1,Math.floor(bytes.byteLength/2),24000);
+    const arr=audio.getChannelData(0);
+    for(let i=0;i<arr.length;i++)arr[i]=view.getInt16(i*2,true)/32768;
+    const source=outCtx.createBufferSource();source.buffer=audio;source.connect(outAnalyser);
+    const when=Math.max(outCtx.currentTime+.025,nextPlay||0);
+    nextPlay=when+audio.duration;audioSegments.push({start:when,end:nextPlay});
+    playCount++;sources.push(source);
+    source.onended=()=>{sources=sources.filter(s=>s!==source);playCount=Math.max(0,playCount-1)};
+    source.start(when);
+  }
   function downsample(buffer,sampleRate){const ratio=sampleRate/16000;if(ratio<=0)return new Uint8Array();const count=Math.floor(buffer.length/ratio),bytes=new Uint8Array(count*2),view=new DataView(bytes.buffer);for(let i=0;i<count;i++){const start=Math.floor(i*ratio),end=Math.max(start+1,Math.floor((i+1)*ratio));let sum=0;for(let j=start;j<end&&j<buffer.length;j++)sum+=buffer[j];const val=Math.max(-1,Math.min(1,sum/(end-start)));view.setInt16(i*2,val<0?val*32768:val*32767,true)}return bytes}
   function refreshMicDiagnostics(){
     if(!connected||mode!=='voice')return;
@@ -186,7 +237,7 @@
     if(tabs)tabs.postMessage({type:'new-session'});
     connecting=true;stopRequested=false;failedStart=false;mode=which;clearError();updateControls();status('Öppnar privat samtal…');
     try{
-      outCtx=new(window.AudioContext||window.webkitAudioContext)();await outCtx.resume();
+      outCtx=new(window.AudioContext||window.webkitAudioContext)();await outCtx.resume();outAnalyser=outCtx.createAnalyser();outAnalyser.fftSize=256;outAnalyser.connect(outCtx.destination);lipTimer=setInterval(updateLips,40);
       if(which==='voice'){mic=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true},video:false});micCtx=new(window.AudioContext||window.webkitAudioContext)();await micCtx.resume()}
       const apiKey=configured?undefined:$('api-key').value.trim();
       const r=await fetch('/api/session',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify({animal,apiKey}),cache:'no-store'});
@@ -199,7 +250,7 @@
       ws.onclose=()=>{if(!stopRequested)end(failedStart?'Anslutningen kunde inte startas.':'Gemini avslutade anslutningen.')};
     }catch(err){end('Det gick inte att börja: '+short(err.message,180))}
   }
-  function end(reason){stopRequested=true;connecting=false;connected=false;clearInterval(clock);clearTimeout(expiryTimer);clearInterval(micDiagnosticTimer);clearTimeout(transcriptionTimeout);clock=null;expiryTimer=null;micDiagnosticTimer=null;transcriptionTimeout=null;micPaused=false;if(recognition){recognition.onend=null;recognition.onerror=null;recognition.onresult=null;try{recognition.abort()}catch{}recognition=null}recognizing=false;$('recognize-speech').textContent='🎙 Tala in';$('finish-speech').textContent='✓ Jag har pratat klart';if(ws){try{ws.close()}catch{}ws=null}if(processor){processor.disconnect();processor.onaudioprocess=null;processor=null}if(micSource){micSource.disconnect();micSource=null}if(mutedGain){mutedGain.disconnect();mutedGain=null}if(mic){mic.getTracks().forEach(t=>{t.onended=null;t.stop()});mic=null}if(micCtx){micCtx.close().catch(()=>{});micCtx=null}clearSound();if(outCtx){outCtx.close().catch(()=>{});outCtx=null}voiceSession=null;$('mic-diagnostics').hidden=true;$('speech-diagnostics').hidden=true;$('mic-meter-fill').style.width='0%';updateControls();status('Samtalet är avslutat');$('timer').textContent='03:00 max';if(reason)showError(reason)}
+  function end(reason){stopRequested=true;connecting=false;connected=false;clearInterval(clock);clearTimeout(expiryTimer);clearInterval(micDiagnosticTimer);clearTimeout(transcriptionTimeout);clock=null;expiryTimer=null;micDiagnosticTimer=null;transcriptionTimeout=null;micPaused=false;if(recognition){recognition.onend=null;recognition.onerror=null;recognition.onresult=null;try{recognition.abort()}catch{}recognition=null}recognizing=false;$('recognize-speech').textContent='🎙 Tala in';$('finish-speech').textContent='✓ Jag har pratat klart';if(ws){try{ws.close()}catch{}ws=null}if(processor){processor.disconnect();processor.onaudioprocess=null;processor=null}if(micSource){micSource.disconnect();micSource=null}if(mutedGain){mutedGain.disconnect();mutedGain=null}if(mic){mic.getTracks().forEach(t=>{t.onended=null;t.stop()});mic=null}if(micCtx){micCtx.close().catch(()=>{});micCtx=null}clearSound();if(lipTimer){clearInterval(lipTimer);lipTimer=null}outAnalyser=null;if(outCtx){outCtx.close().catch(()=>{});outCtx=null}$('stage').classList.remove('is-listening','is-thinking');voiceSession=null;$('mic-diagnostics').hidden=true;$('speech-diagnostics').hidden=true;$('mic-meter-fill').style.width='0%';updateControls();status('Samtalet är avslutat');$('timer').textContent='03:00 max';if(reason)showError(reason)}
   $('start-stt').addEventListener('click',()=>begin('speech'));
   $('start-voice').addEventListener('click',()=>begin('voice'));
   $('start-text').addEventListener('click',()=>begin('text'));
@@ -208,10 +259,10 @@
   $('clear-api-key').addEventListener('click',()=>{$('api-key').value='';clearError();status('Ange din Gemini-nyckel för att testa');$('api-key').focus()});
   $('end').addEventListener('click',()=>end('Du avslutade testet.'));
   $('chat-form').addEventListener('submit',e=>{e.preventDefault();const text=$('chat-input').value.trim();if(sendTextMessage(text))$('chat-input').value=''});
-  $('preview').addEventListener('click',()=>{if(!('speechSynthesis' in window)){showError('Demorösten stöds inte i den här webbläsaren.');return}speechSynthesis.cancel();const say=new SpeechSynthesisUtterance(animals[animal].sample);say.lang='sv-SE';say.rate=animal==='duck'?1.12:.95;say.pitch=animal==='duck'?1.38:1.05;say.onstart=()=>$('stage').classList.add('is-speaking');say.onend=()=>$('stage').classList.remove('is-speaking');say.onerror=()=>$('stage').classList.remove('is-speaking');speechSynthesis.speak(say)});
+  $('preview').addEventListener('click',()=>{if(!('speechSynthesis' in window)){showError('Demorösten stöds inte i den här webbläsaren.');return}speechSynthesis.cancel();const say=new SpeechSynthesisUtterance(animals[animal].sample);say.lang='sv-SE';say.rate=animal==='duck'?1.12:.95;say.pitch=animal==='duck'?1.38:1.05;say.onstart=()=>$('stage').classList.add('is-previewing');say.onend=()=>$('stage').classList.remove('is-previewing');say.onerror=()=>$('stage').classList.remove('is-previewing');speechSynthesis.speak(say)});
   window.addEventListener('pagehide',()=>{if(connected||connecting)end();$('api-key').value=''});
   document.addEventListener('visibilitychange',()=>{if(document.hidden&&(connected||connecting))end('Testet stoppades när du lämnade fliken, för att spara gratisresurser.')});
-  updateControls();choose('fox');check();
+  updateControls();choose('fox');blink();check();
 })();
 </script>
 </body>
