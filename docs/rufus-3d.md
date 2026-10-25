@@ -24,3 +24,5 @@ The app is bundled locally with exact, locked dependencies into the existing Wor
 The cloud QA browser has WebGL disabled. Its original SVG fallback and character selection can be tested, but it cannot validate the GPU-rendered appearance, context restoration or real Android frame rate. A real-device visual and microphone check is required before approving deployment. Local QA does not use the production secret or create Gemini sessions. `npm run dev`, then `/qa`, provides 390 px / 768 px viewport fixtures and synthetic pose/context-loss controls. These are dev-server-only and are not included in the Worker.
 
 The Node lifecycle test uses a renderer double to exercise frame cancellation, character switching, context events, initialization failure and geometry/texture disposal. It does not substitute for a real GPU test. Offline geometry rendering was used to correct tail-coat alignment and eyelid closure; its lighting/materials differ from Three.js.
+
+Browser viewport QA: 390 px and 768 px fixtures were inspected. The phone test revealed intrinsic grid overflow; columns and grid children now shrink correctly (body scroll width equals client width).

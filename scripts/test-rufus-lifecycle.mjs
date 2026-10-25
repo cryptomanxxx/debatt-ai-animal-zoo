@@ -35,4 +35,7 @@ dispose();dispose();assert.equal(frames.size,0);assert.equal(disposed,1);assert.
 // Both constructor and first-render failures leave the original SVG available.
 const fallback=new Element();mountRufus(fallback,()=>{throw Error('WebGL unavailable')});assert.equal(fallback.children.length,0);assert.ok(!fallback.attrs.has('data-rufus-ready'));
 const failed=new Element();mountRufus(failed,()=>({...renderer,render(){throw Error('GPU failure')}}));assert.equal(failed.children.length,0);assert.ok(!failed.attrs.has('data-rufus-ready'));assert.equal(frames.size,0);
+assert.ok(observers.every(o=>o.disconnected));
+doc.dispatchEvent(new Event('visibilitychange'));reduced.dispatchEvent(new Event('change'));assert.equal(frames.size,0,'Failed mounts cannot restart detached rendering');
+const resizeFailed=new Element();mountRufus(resizeFailed,()=>({...renderer,setSize(){throw Error('Resize failure')}}));assert.equal(resizeFailed.children.length,0);assert.ok(observers.every(o=>o.disconnected));assert.equal(frames.size,0);
 console.log('Rufus lifecycle: hidden/offscreen/Doris, reduced motion, context loss/restore, failed init and idempotent GPU disposal passed.');
