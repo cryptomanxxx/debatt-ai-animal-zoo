@@ -49,7 +49,9 @@ assert.ok(!html.includes("finally{$('api-key').value=''}"));
 assert.ok(!html.includes('__ANIMAL_ZOO_HTML_PLACEHOLDER__'));
 const inlineScript=html.match(/<script>([\s\S]*?)<\/script>/)?.[1];
 assert.ok(inlineScript);
-new Script(inlineScript,{filename:'animal-zoo-browser.js'});
+for (const [i,match] of [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].entries()) new Script(match[1],{filename:`animal-zoo-browser-${i}.js`});
+assert.equal([...html.matchAll(/<script>/g)].length,2);
+assert.ok(!html.includes('<!-- RUFUS_RENDERER -->'));
 
 assert.equal((await zoo.fetch(post('fox'),{GEMINI_API_KEY:'test'})).status,401);
 assert.equal((await zoo.fetch(post('fox',{'oai-authenticated-user-id':'test',origin:'https://wrong.site'}),{GEMINI_API_KEY:'test'})).status,403);
@@ -181,3 +183,5 @@ try{
   } finally {console.info=oldInfo;}
 } finally {globalThis.fetch=oldFetch}
 console.log('Animal Zoo: private-site, sanitized provider reasons, minimal token fallback and Gemini session checks passed.');
+
+await import('./test-rufus.mjs');
