@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#12192d">
+  <title>Animal Zoo – Debatt-AI privat testlabb</title>
+  <meta name="description" content="Privat röstsamtalstest med räven Rufus och ankan Doris.">
+  <style>
+    :root{color-scheme:dark;--night:#11172b;--soft:#f8f4e8;--muted:#aeb8ca;--line:#ffffff21;--lime:#cdf77d;--accent:#f5ad66;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+    *{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;min-height:100vh;color:var(--soft);background:radial-gradient(ellipse at 80% -15%,#3f4d7f88,transparent 45%),radial-gradient(ellipse at 2% 65%,#235c5880,transparent 45%),var(--night)}button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.42}
+    .orb{position:fixed;border-radius:50%;background:#ffffff06;filter:blur(1px);pointer-events:none}.orb.one{width:36vw;height:36vw;right:-12vw;top:18vh;border:1px solid #ffffff14}.orb.two{width:20vw;height:20vw;left:-10vw;bottom:-10vw;border:1px solid #ffffff16}
+    .page{max-width:1140px;margin:auto;padding:25px 28px 56px;position:relative;z-index:1}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:36px}.brand{font-size:15px;letter-spacing:.22em;font-weight:850;display:flex;align-items:center;gap:11px}.brand-mark{height:36px;width:36px;display:grid;place-items:center;border-radius:12px;background:var(--lime);color:#132129;font-size:20px;letter-spacing:normal}.pill{display:inline-flex;align-items:center;gap:8px;color:#d8e6db;border:1px solid #b4d98b55;background:#bbdeaf14;padding:9px 13px;border-radius:99px;font-size:12px;font-weight:750;letter-spacing:.045em}.dot{height:7px;width:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 9px #d3f58e}
+    .eyebrow{text-transform:uppercase;letter-spacing:.18em;color:#cdf77d;font-size:12px;font-weight:850;margin-bottom:14px}.heading{font-size:clamp(40px,6.5vw,80px);line-height:1;letter-spacing:-.06em;font-weight:860;margin:0 0 19px}.heading em{font-family:Georgia,serif;font-weight:400;color:#fbb77e}.intro{color:#bbc5d0;line-height:1.7;max-width:560px;margin:0 0 34px;font-size:15px}.layout{display:grid;grid-template-columns:340px minmax(0,1fr);gap:24px;align-items:start}.small-title{font-size:11px;color:#bec7d3;text-transform:uppercase;letter-spacing:.18em;font-weight:800;margin:0 0 14px}
+    .character-list{display:grid;gap:12px}.character{border:1px solid var(--line);background:#ffffff0b;border-radius:20px;padding:14px;display:flex;gap:15px;align-items:center;text-align:left;color:var(--soft);transition:transform .2s,background .2s,border-color .2s;min-height:95px}.character:hover{transform:translateY(-2px);background:#ffffff13}.character[aria-pressed="true"]{border-color:#cffa86;background:#bfe78414;box-shadow:0 0 0 1px #cffa8660}.avatar{border-radius:16px;flex:none;width:66px;height:66px;display:grid;place-items:center;overflow:hidden}.fox-thumb{background:linear-gradient(130deg,#edac70,#d36c4c)}.duck-thumb{background:linear-gradient(130deg,#cbe5ac,#86bfc4)}.avatar svg{width:62px;height:62px}.character-copy{display:grid;gap:4px}.character-copy b{font-size:18px}.character-copy span{color:#aab6c6;font-size:12px}.mini-arrow{margin-left:auto;font-size:24px;color:#dbefb0}
+    .side-note{border:1px solid #ffffff15;border-radius:20px;padding:20px;background:#ffffff07;margin-top:21px}.side-note h3{font-size:14px;margin:0 0 10px}.side-note p{font-size:12px;line-height:1.8;color:#9faebf;margin:0}.side-note .facts{margin-top:14px;display:flex;gap:7px;flex-wrap:wrap}.tag{border:1px solid #ffffff1e;border-radius:7px;padding:7px 9px;color:#c3cbd4;font-size:11px}
+    .stage-card{border-radius:27px;overflow:hidden;border:1px solid #ffffff27;background:linear-gradient(145deg,#27364a,#171f33);box-shadow:0 24px 70px #070d1d70}.stage{height:390px;position:relative;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 65%,#78baa073,transparent 58%),linear-gradient(#314969,#1a3946 68%,#1f413e)}.stage.duck{background:radial-gradient(ellipse at 50% 76%,#8fcec487,transparent 56%),linear-gradient(#5b839b,#3d7180 68%,#2d6671)}.sky-dot{position:absolute;width:5px;height:5px;background:#f1ffc9;border-radius:50%;box-shadow:0 0 12px #e8ffa0;opacity:.8}.sky-dot.a{top:20%;left:17%}.sky-dot.b{top:13%;right:24%;width:3px;height:3px}.sky-dot.c{top:37%;right:12%;width:3px;height:3px}.hill{position:absolute;bottom:-82px;height:170px;width:115%;border-radius:50%}.hill.one{left:-33%;background:#1f5d54}.hill.two{right:-40%;background:#1b4a43;bottom:-93px}.duck .hill.one{background:#246d72}.duck .hill.two{background:#275a68}.pond{position:absolute;bottom:28px;height:36px;width:210px;border-radius:50%;background:#b1e8de33;filter:blur(1px)}.fox .pond{display:none}
+    .hero-svg{height:min(320px,86%);max-width:80%;position:relative;z-index:2;filter:drop-shadow(0 25px 18px #08101a60);transform-origin:50% 85%;animation:float 4s ease-in-out infinite}.stage.is-speaking .hero-svg{animation:float 1s ease-in-out infinite}.stage.is-speaking .talk{transform-box:fill-box;transform-origin:center;animation:chatter .16s infinite alternate}.stage:not(.is-speaking) .talk{transform:scaleY(.65)}.stage:not(.is-speaking) .fox-mouth,.stage:not(.is-speaking) .duck-mouth{opacity:.9}@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-8px) rotate(1deg)}}@keyframes chatter{from{transform:scaleY(.3)}to{transform:scaleY(1.2)}}.character-name{position:absolute;left:22px;top:22px;z-index:3;background:#13202b83;border:1px solid #ffffff35;padding:9px 13px;border-radius:12px;font-size:12px;font-weight:750;backdrop-filter:blur(8px)}.sound-orbit{position:absolute;z-index:1;width:300px;height:300px;border:1px solid #ffffff18;border-radius:50%}.sound-orbit.second{width:360px;height:360px}.stage.is-speaking .sound-orbit{animation:pulse 1s infinite alternate}@keyframes pulse{to{transform:scale(1.08);border-color:#e9fac45a}}
+    .controls{padding:22px 24px 24px}.statusline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}.status{font-size:13px;color:#e0e5ea;display:flex;align-items:center;gap:8px}.status .dot{background:#f3bd77;box-shadow:none}.status.active .dot{background:var(--lime);box-shadow:0 0 10px #c9f77b}.timer{font-variant-numeric:tabular-nums;font-size:12px;color:#b7c4cb;border:1px solid #ffffff28;border-radius:99px;padding:6px 11px}.buttons{display:flex;flex-wrap:wrap;gap:10px}.primary{flex:1;min-width:185px;border:0;background:var(--lime);color:#182c31;border-radius:14px;padding:14px 18px;font-weight:800;display:flex;justify-content:center;align-items:center;gap:9px}.secondary{border:1px solid #ffffff3b;background:#ffffff0c;color:#fff;border-radius:14px;padding:13px 16px;font-weight:730}.danger{border-color:#feaa9880;color:#ffd8cd;background:#aa3d301c}.instructions{font-size:12px;color:#a2b1bc;margin:15px 0 0;line-height:1.6}.message{border-radius:12px;padding:12px 14px;margin:0 0 14px;background:#e7ad7130;color:#ffe7c9;font-size:12px;line-height:1.6}.message.hidden{display:none}
+    .secret-box{margin:0 0 17px;padding:15px;border-radius:15px;border:1px solid #cffa865b;background:#b8df9c10}.secret-box label{display:block;font-size:13px;font-weight:750;margin-bottom:7px}.secret-box input{width:100%;background:#0b1727;color:#fff;border:1px solid #ffffff48;border-radius:10px;padding:12px;font:inherit;outline:none}.secret-box input:focus{border-color:var(--lime)}.secret-box p{font-size:11px;color:#bdcccd;line-height:1.6;margin:8px 0 0}.chat{margin-top:20px;background:#ffffff09;border:1px solid var(--line);padding:22px;border-radius:23px}.chat-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.chat-head h2{margin:0;font-size:16px}.chat-head span{font-size:11px;color:#98aab8}.chat-log{max-height:160px;min-height:70px;overflow:auto;display:grid;gap:8px;margin-bottom:13px}.chat-log p{margin:0;border-left:2px solid #ffffff2c;padding:5px 9px;color:#cad4da;font-size:12px;line-height:1.5}.chat-log p strong{color:#e9f2ee}.chat-form{display:flex;gap:8px}.chat-form input{flex:1;min-width:0;border:1px solid #ffffff2d;background:#0c1725a0;color:#fff;padding:12px 13px;border-radius:12px;outline:none}.chat-form input:focus{border-color:#cffa86}.chat-form button{border:0;background:#f5b37d;color:#242534;border-radius:12px;font-weight:800;padding:10px 18px}.stats{display:flex;gap:16px;flex-wrap:wrap;color:#a0afbf;font-size:11px;margin-top:16px}.stats b{color:#e7f0ec}.footer{margin:28px 0 0;text-align:center;font-size:11px;color:#7d8f9f}
+    @media(max-width:830px){.layout{grid-template-columns:1fr}.character-list{grid-template-columns:1fr 1fr}.side-note{display:none}.stage{height:330px}.page{padding:20px 18px 36px}.topbar{margin-bottom:28px}}
+    @media(max-width:530px){.topbar{margin-bottom:25px}.brand{letter-spacing:.1em;font-size:12px}.brand-mark{width:32px;height:32px}.pill{font-size:10px;padding:8px 10px}.heading{font-size:clamp(38px,11vw,58px)}.intro{font-size:13px;margin-bottom:25px}.character{padding:9px;gap:8px;min-height:77px;border-radius:15px}.character-copy b{font-size:14px}.character-copy span{font-size:10px}.avatar{width:45px;height:52px;border-radius:10px}.avatar svg{width:48px;height:48px}.mini-arrow{display:none}.layout{gap:15px}.stage-card{border-radius:22px}.stage{height:300px}.sound-orbit{width:260px;height:260px}.sound-orbit.second{width:320px;height:320px}.controls{padding:17px}.secondary{flex:1}.primary{width:100%}.chat{padding:17px}.chat-form button{padding:10px 13px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+    .secret-row{display:flex;gap:8px;align-items:stretch}.secret-row input{min-width:0;flex:1}.secret-row button{padding:0 15px;white-space:nowrap}
+    .mic-diagnostics{margin-top:15px;padding:15px;border:1px solid #a8d7e36b;border-radius:15px;background:#7cb8c214}.mic-diagnostics strong{display:block;font-size:13px;margin-bottom:9px}.mic-meter{height:9px;background:#101d2c;border:1px solid #ffffff32;border-radius:99px;overflow:hidden}.mic-meter-fill{width:0;height:100%;background:linear-gradient(90deg,#bfe979,#71d8cc);transition:width .13s}.mic-diagnostics .mic-detail{color:#b9c9d1;font-size:12px;margin:8px 0 12px;line-height:1.5}.mic-diagnostics button{padding:10px 14px;font-size:12px}.mic-diagnostics .mic-tip{color:#9aaec0;font-size:11px;line-height:1.6;margin:12px 0 0}
+    .speech-panel{padding:14px;margin:13px 0;border:1px solid #cdeebd60;background:#142d2bc7;border-radius:13px}.speech-panel .speech-label{color:#cffa86;font-size:12px;font-weight:750}.speech-panel p{font-size:16px;line-height:1.5;min-height:23px;margin:7px 0;color:#fff;overflow-wrap:anywhere}.speech-panel small{color:#b7c4cb;font-size:11px;line-height:1.5;display:block}.speech-diagnostics{margin-top:15px;border:1px solid #a8d7e36b;border-radius:15px;padding:15px;background:#7cb8c214}.speech-diagnostics .secondary{margin-top:4px}.speech-diagnostics .mic-tip{font-size:11px;color:#aabdc7;line-height:1.6}.speech-diagnostics strong{font-size:13px}
+  </style>
+</head>
+<body>
+<div class="orb one"></div><div class="orb two"></div>
+<main class="page">
+  <header class="topbar"><div class="brand"><span class="brand-mark">✦</span> DEBATT-AI <span style="opacity:.42">/</span> ANIMAL ZOO</div><span class="pill"><span class="dot"></span> PRIVAT TESTLABB</span></header>
+  <div class="eyebrow">Ett litet experiment i stora samtal</div>
+  <h1 class="heading">Träffa våra<br><em>pratglada vänner.</em></h1>
+  <p class="intro">Två personligheter. Två röster. En liten försmak av något större. Välj ett djur och säg hej – en privat prototyp av Debatt-AI Animal Zoo.</p>
+  <div class="layout">
+    <aside>
+      <p class="small-title">01 / Välj din nya vän</p>
+      <div class="character-list">
+        <button type="button" class="character" data-animal="fox" aria-pressed="true"><span class="avatar fox-thumb"><svg viewBox="0 0 130 140" aria-hidden="true"><path d="M17 66 23 7l37 29L99 8l13 60-9 43-38 22-39-22Z" fill="#e7753f"/><path d="m27 16 29 28-33 21zm68 0L73 44l32 21z" fill="#64383e"/><path d="m21 74 44 39 43-39-6 36-37 23-39-23z" fill="#ffe8cb"/><ellipse cx="49" cy="73" rx="5" ry="6" fill="#1d2935"/><ellipse cx="82" cy="73" rx="5" ry="6" fill="#1d2935"/><path d="m56 96 9-5 9 5-9 9z" fill="#493239"/></svg></span><span class="character-copy"><b>Räven Rufus</b><span>Nyfiken &amp; lite busig</span></span><span class="mini-arrow">↗</span></button>
+        <button type="button" class="character" data-animal="duck" aria-pressed="false"><span class="avatar duck-thumb"><svg viewBox="0 0 130 140" aria-hidden="true"><ellipse cx="66" cy="84" rx="45" ry="46" fill="#ffe496"/><path d="M47 43Q42 13 67 24Q87 6 93 36" fill="#ffe496"/><ellipse cx="51" cy="72" rx="6" ry="7" fill="#2b3642"/><ellipse cx="79" cy="72" rx="6" ry="7" fill="#2b3642"/><path d="M38 90Q66 77 94 91L67 110Z" fill="#ec9958"/></svg></span><span class="character-copy"><b>Ankan Doris</b><span>Rolig &amp; påhittig</span></span><span class="mini-arrow">↗</span></button>
+      </div>
+      <div class="side-note"><h3>Vad testar vi?</h3><p>Om samtal med AI-djur känns naturliga på en Android-surfplatta. Vi mäter svarstid, granskar ljudet och håller varje test till tre minuter.</p><div class="facts"><span class="tag">Gemini Live</span><span class="tag">Svenska</span><span class="tag">3 minuter</span></div></div>
+    </aside>
+    <section aria-label="Samtal med djur">
+      <div class="stage-card">
+        <div id="stage" class="stage fox">
+          <div class="sky-dot a"></div><div class="sky-dot b"></div><div class="sky-dot c"></div><div class="sound-orbit"></div><div class="sound-orbit second"></div><div class="hill one"></div><div class="hill two"></div><div class="pond"></div>
+          <div class="character-name" id="character-name">🦊 Rufus lyssnar gärna</div>
+          <svg id="fox-hero" class="hero-svg" viewBox="0 0 340 360" role="img" aria-label="Illustration av räven Rufus">
+            <ellipse cx="171" cy="327" rx="75" ry="17" fill="#112e304e"/>
+            <path d="M123 247Q88 284 94 327Q168 349 239 325Q251 284 217 245Z" fill="#dd753e"/><path d="M155 254Q169 284 183 255L200 327H140Z" fill="#f4d9b7"/>
+            <path d="M71 163 75 32l84 66Q173 88 185 96l79-65 9 132-26 93-78 40-79-42Z" fill="#ed8648" stroke="#be6438" stroke-width="4" stroke-linejoin="round"/>
+            <path d="M85 66 135 110 87 149Z" fill="#8e4750"/><path d="M257 65 212 112 261 149Z" fill="#8e4750"/>
+            <path d="M91 195Q117 233 169 238Q219 233 250 195L245 255 169 303 93 255Z" fill="#fff0d3"/>
+            <ellipse cx="134" cy="179" rx="13" ry="17" fill="#2a3440"/><ellipse cx="203" cy="179" rx="13" ry="17" fill="#2a3440"/><circle cx="139" cy="174" r="4" fill="#fff"/><circle cx="208" cy="174" r="4" fill="#fff"/>
+            <ellipse cx="111" cy="211" rx="17" ry="9" fill="#e88971" opacity=".72"/><ellipse cx="228" cy="211" rx="17" ry="9" fill="#e88971" opacity=".72"/>
+            <path d="M150 229Q169 216 188 229L169 245Z" fill="#473c45"/>
+            <g class="talk"><path class="fox-mouth" d="M157 251Q170 267 183 251Q181 283 169 282Q159 281 157 251Z" fill="#60383d"/><ellipse cx="170" cy="274" rx="7" ry="4" fill="#eb9997"/></g>
+            <path d="M113 288Q84 263 58 282Q39 304 68 317" fill="none" stroke="#e98a4d" stroke-width="23" stroke-linecap="round"/><path d="M226 284Q258 263 281 288Q303 314 271 323" fill="none" stroke="#e98a4d" stroke-width="23" stroke-linecap="round"/>
+          </svg>
+          <svg id="duck-hero" class="hero-svg" viewBox="0 0 340 360" role="img" aria-label="Illustration av ankan Doris" hidden>
+            <ellipse cx="170" cy="329" rx="78" ry="18" fill="#18546150"/>
+            <path d="M124 242Q96 270 107 324Q165 348 231 326Q243 265 216 242Z" fill="#f8df8b"/>
+            <path d="M120 280Q91 263 75 295Q67 315 96 323L135 311M218 277Q253 264 269 294Q269 320 241 324L205 308" fill="#ffeaab" stroke="#e0c46a" stroke-width="3"/>
+            <ellipse cx="171" cy="166" rx="98" ry="107" fill="#ffebb2" stroke="#e9ce85" stroke-width="4"/>
+            <path d="M144 79Q132 43 151 32Q160 48 170 57Q186 28 200 33Q198 62 188 77" fill="#ffebb2" stroke="#e9ce85" stroke-width="5" stroke-linejoin="round"/>
+            <ellipse cx="132" cy="166" rx="14" ry="18" fill="#324153"/><ellipse cx="211" cy="166" rx="14" ry="18" fill="#324153"/><circle cx="136" cy="161" r="5" fill="#fff"/><circle cx="216" cy="161" r="5" fill="#fff"/>
+            <ellipse cx="104" cy="201" rx="20" ry="11" fill="#f6ac9a" opacity=".55"/><ellipse cx="240" cy="201" rx="20" ry="11" fill="#f6ac9a" opacity=".55"/>
+            <path d="M120 206Q171 188 222 206Q215 233 170 236Q126 232 120 206Z" fill="#eea562"/>
+            <g class="talk"><path class="duck-mouth" d="M131 231Q170 255 211 231Q206 265 170 269Q135 264 131 231Z" fill="#c76c52"/><ellipse cx="170" cy="260" rx="18" ry="5" fill="#eea092"/></g>
+            <path d="M140 313l-9 25-29 7M197 315l10 23 30 7" fill="none" stroke="#eaa661" stroke-width="9" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="controls">
+          <div class="statusline"><div class="status" id="status" role="status"><span class="dot"></span><span id="status-text">Kontrollerar AI-anslutningen…</span></div><span class="timer" id="timer">03:00 max</span></div>
+          <div id="secret-box" class="secret-box" hidden><label for="api-key">🔐 Din Gemini API-nyckel</label><div class="secret-row"><input id="api-key" type="password" placeholder="Klistra in nyckeln här" autocomplete="off" autocapitalize="none" spellcheck="false" inputmode="text"><button type="button" id="clear-api-key" class="secondary">Rensa</button></div><p>För detta privata test ligger nyckeln kvar i fältet medan fliken är öppen, så du kan försöka igen utan att klistra in den på nytt. Den skickas över HTTPS vid sessionsstart men sparas inte på servern eller i webbläsarens lagring. Stäng eller ladda om sidan för att rensa den.</p></div>
+          <div id="message" class="message hidden" role="alert"></div>
+          <div class="buttons"><button class="primary" id="start-stt" type="button">🎤 Tala → se text → få svar</button><button class="secondary" id="start-voice" type="button">🎙 Direkt röstsamtal (test)</button><button class="secondary" id="start-text" type="button">⌨ Testa med text</button><button class="secondary danger" id="end" type="button" hidden>■ Avsluta</button><button class="secondary" id="preview" type="button">▶ Demoröst</button></div>
+          <div id="speech-diagnostics" class="speech-diagnostics" hidden><strong id="speech-health">Tryck på Tala in och säg något på svenska.</strong><div class="speech-panel"><span class="speech-label">🎤 Det här uppfattade webbläsaren</span><p id="speech-transcript" aria-live="polite">Väntar på ditt tal…</p><small id="speech-note">När talet har blivit text skickas det till djuret, som svarar med röst.</small></div><button id="recognize-speech" class="secondary" type="button">🎙 Tala in</button><p class="mic-tip">Använder webbläsarens taligenkänning, om den stöds. På vissa enheter skickas ljudet till webbläsarleverantörens tjänst. Ingen separat API-nyckel behövs.</p></div>
+          <div id="mic-diagnostics" class="mic-diagnostics" hidden><strong id="mic-health">Startar mikrofonen…</strong><div class="mic-meter" aria-label="Mikrofonens ljudnivå"><div id="mic-meter-fill" class="mic-meter-fill"></div></div><p id="mic-detail" class="mic-detail">0 ljudpaket skickade.</p><div class="speech-panel"><span class="speech-label">🎤 Det här uppfattade Gemini Live</span><p id="live-transcript" aria-live="polite">Ingen transkription ännu…</p><small id="live-note">När Gemini känner igen tal ska texten visas här.</small></div><button id="finish-speech" class="secondary" type="button">✓ Jag har pratat klart</button><p class="mic-tip">När du trycker ”Jag har pratat klart” pausas mikrofonens ljudöverföring medan Gemini får avsluta turen. Om rutan förblir tom, testa ”Tala → se text → få svar” ovan vid nästa försök.</p></div>
+          <p class="instructions">Röstsamtalet kräver att du ger mikrofontillstånd. Använd gärna hörlurar. Djurens röster är AI-genererade. Vi sparar inga samtal här; Googles och webbläsarens tjänster kan behandla ljud och text. På Googles gratisnivå kan innehåll användas för att förbättra tjänsten. Dela inte personuppgifter.</p>
+        </div>
+      </div>
+      <div class="chat"><div class="chat-head"><h2>💬 Samtalslogg</h2><span>Endast under det här testet</span></div><div id="chat-log" class="chat-log" aria-live="polite"><p>Välj ett djur och starta ett samtal. Prata eller skriv ett meddelande.</p></div><form class="chat-form" id="chat-form"><input id="chat-input" maxlength="300" placeholder="Skriv till Rufus…" autocomplete="off" aria-label="Meddelande till djuret" disabled><button type="submit" id="send" disabled>Skicka</button></form><div class="stats"><span>Turordningar: <b id="turns">0</b></span><span>Senaste svarstid: <b id="latency">–</b></span><span>Motor: <b>Gemini 3.8 Live</b></span></div></div>
+    </section>
+  </div>
+  <footer class="footer">Debatt-AI Animal Zoo · Privat forskningsprototyp · Ingen offentlig publicering på debatt-ai.se</footer>
+</main>
+<script>
+(function(){
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const animals = {fox:{name:'Rufus',emoji:'🦊',sample:'Hej! Jag heter Rufus. Vill du höra en hemlighet om skogen?'},duck:{name:'Doris',emoji:'🦆',sample:'Kvack och välkommen! Jag heter Doris. Vad ska vi hitta på idag?'}};
+  let animal='fox',configured=false,connected=false,connecting=false,mode='voice';
+  let ws=null,mic=null,micCtx=null,outCtx=null,processor=null,micSource=null,mutedGain=null;
+  let micPackets=0,micAudiblePackets=0,micLevel=0,micPeak=0,lastPacketAt=0,voiceActiveAt=0,micDiagnosticTimer=null,micPaused=false;
+  let recognition=null,recognizing=false,recognizedThisTurn=false,transcriptionTimeout=null;
+  let sources=[],nextPlay=0,playCount=0,expiresAt=0,clock=null,expiryTimer=null,lastInputAt=0,turns=0;
+  let failedStart=false,stopRequested=false,voiceSession=null;
+  const tabs='BroadcastChannel' in window?new BroadcastChannel('debatt-ai-animal-zoo-private-lab'):null;
+  if(tabs)tabs.onmessage=e=>{if(e.data?.type==='new-session'&&(connected||connecting))end('Ett nytt samtal öppnades i en annan flik.')};
+  const short = (s,n=220)=>String(s||'').slice(0,n);
+  function status(label,active=false){$('status-text').textContent=label;$('status').classList.toggle('active',active)}
+  function showError(s){$('message').textContent=s;$('message').classList.remove('hidden')}
+  function clearError(){$('message').classList.add('hidden');$('message').textContent=''}
+  function updateControls(){
+    $('start-voice').hidden=connecting||connected;$('start-text').hidden=connecting||connected;$('start-stt').hidden=connecting||connected;$('end').hidden=!(connecting||connected);
+    $('chat-input').disabled=!connected;$('send').disabled=!connected;
+    $('api-key').disabled=connected||connecting;$('clear-api-key').disabled=connected||connecting;
+    document.querySelectorAll('[data-animal]').forEach(b=>b.disabled=connected||connecting);
+  }
+  function choose(id){if(connected||connecting)return;animal=id;const a=animals[id];document.querySelectorAll('[data-animal]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.animal===id)));$('stage').className='stage '+id;$('fox-hero').toggleAttribute('hidden',id!=='fox');$('duck-hero').toggleAttribute('hidden',id!=='duck');$('character-name').textContent=a.emoji+' '+a.name+' lyssnar gärna';$('chat-input').placeholder='Skriv till '+a.name+'…';clearError()}
+  document.querySelectorAll('[data-animal]').forEach(b=>b.addEventListener('click',()=>choose(b.dataset.animal)));
+  function log(who,text){if(!text)return;const p=document.createElement('p');const strong=document.createElement('strong');strong.textContent=who+': ';p.append(strong,document.createTextNode(short(text,600)));$('chat-log').append(p);while($('chat-log').children.length>12)$('chat-log').firstChild.remove();$('chat-log').scrollTop=$('chat-log').scrollHeight}
+  function resetLog(){$('chat-log').replaceChildren();turns=0;$('turns').textContent='0';$('latency').textContent='–'}
+  function sendTextMessage(text){if(!text||!connected||ws?.readyState!==WebSocket.OPEN)return false;lastInputAt=Date.now();ws.send(JSON.stringify({realtimeInput:{text}}));log('Du',text);return true}
+  function speechToTextAvailable(){return Boolean(window.SpeechRecognition||window.webkitSpeechRecognition)}
+  function updateSpeechTranscript(text,final=false){$('speech-transcript').textContent=short(text,500)||'Väntar på ditt tal…';$('speech-note').textContent=final?'Texten är skickad till '+animals[animal].name+'. Väntar på röstsvar…':'Taligenkänningen arbetar. Texten skickas när du gör paus.'}
+  function startRecognition(){
+    if(!connected||mode!=='speech'||recognizing)return;
+    const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SpeechRecognition){showError('Samsung Internet erbjuder ingen taligenkänning här. Du kan använda mikrofonen på Samsung-tangentbordet i textrutan i stället.');return}
+    recognition=new SpeechRecognition();recognition.lang='sv-SE';recognition.continuous=false;recognition.interimResults=true;recognition.maxAlternatives=1;
+    recognizedThisTurn=false;recognizing=true;$('recognize-speech').textContent='⏹ Avsluta inspelning';$('speech-health').textContent='🎙 Lyssnar – tala nu!';$('speech-transcript').textContent='Lyssnar…';$('speech-note').textContent='Du ser texten här när webbläsaren känner igen talet.';clearError();
+    recognition.onresult=e=>{let finalText='',interim='';for(const result of e.results){const snippet=result[0]?.transcript||'';if(result.isFinal)finalText+=snippet+' ';else interim+=snippet+' '}
+      const visible=(finalText+interim).trim();if(visible)$('speech-transcript').textContent=short(visible,500);
+      if(finalText.trim()&&!recognizedThisTurn){recognizedThisTurn=true;const said=finalText.trim();updateSpeechTranscript(said,true);if(!sendTextMessage(said))showError('Kunde inte skicka den transkriberade texten.');$('speech-health').textContent='✓ Tal blev text – väntar på '+animals[animal].name+'!'}
+    };
+    recognition.onerror=e=>{const reasons={not_allowed:'Mikrofontillstånd saknas.', 'not-allowed':'Mikrofontillstånd saknas.', 'no-speech':'Inget tal uppfattades.', 'audio-capture':'Mikrofonen kunde inte användas.',network:'Taligenkänningen har nätverksproblem.', 'service-not-allowed':'Webbläsaren tillåter inte taligenkänning.'};$('speech-health').textContent='⚠️ '+(reasons[e.error]||'Taligenkänningen kunde inte startas.');if(e.error==='not-allowed')showError('Kontrollera mikrofonbehörigheten i Samsung Internet. Du kan också prova tangentbordets mikrofon.')};
+    recognition.onend=()=>{recognizing=false;recognition=null;$('recognize-speech').textContent='🎙 Tala in igen';if(!recognizedThisTurn&&$('speech-health').textContent.startsWith('🎙'))$('speech-health').textContent='Inget färdigt tal uppfattades. Försök igen.'};
+    try{recognition.start()}catch{$('speech-health').textContent='Taligenkänningen kunde inte startas i den här webbläsaren.';recognizing=false;recognition=null;$('recognize-speech').textContent='🎙 Försök igen'}
+  }
+  async function check(){try{const r=await fetch('/api/status',{cache:'no-store'});if(!r.ok)throw Error('Status saknas');const j=await r.json();configured=Boolean(j.ready);$('secret-box').hidden=configured;status(configured?'Gemini redo för privat test':'Ange din Gemini-nyckel för att testa');}catch{status('Kunde inte kontrollera servern');showError('Kontroll av AI-anslutningen misslyckades.')}}
+  function b64(bytes){let s='';for(let i=0;i<bytes.length;i+=8192)s+=String.fromCharCode.apply(null,bytes.subarray(i,i+8192));return btoa(s)}
+  function fromBase64(s){const binary=atob(s),out=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)out[i]=binary.charCodeAt(i);return out}
+  function clearSound(){for(const source of sources){try{source.stop()}catch{}}sources=[];playCount=0;nextPlay=0;$('stage').classList.remove('is-speaking')}
+  function playAudio(raw){if(!outCtx)return;const bytes=fromBase64(raw);if(bytes.byteLength<2)return;const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);const audio=outCtx.createBuffer(1,Math.floor(bytes.byteLength/2),24000);const arr=audio.getChannelData(0);for(let i=0;i<arr.length;i++)arr[i]=view.getInt16(i*2,true)/32768;const source=outCtx.createBufferSource();source.buffer=audio;source.connect(outCtx.destination);const when=Math.max(outCtx.currentTime+0.025,nextPlay||0);nextPlay=when+audio.duration;playCount++;sources.push(source);$('stage').classList.add('is-speaking');source.onended=()=>{sources=sources.filter(s=>s!==source);playCount=Math.max(0,playCount-1);if(!playCount)$('stage').classList.remove('is-speaking')};source.start(when)}
+  function downsample(buffer,sampleRate){const ratio=sampleRate/16000;if(ratio<=0)return new Uint8Array();const count=Math.floor(buffer.length/ratio),bytes=new Uint8Array(count*2),view=new DataView(bytes.buffer);for(let i=0;i<count;i++){const start=Math.floor(i*ratio),end=Math.max(start+1,Math.floor((i+1)*ratio));let sum=0;for(let j=start;j<end&&j<buffer.length;j++)sum+=buffer[j];const val=Math.max(-1,Math.min(1,sum/(end-start)));view.setInt16(i*2,val<0?val*32768:val*32767,true)}return bytes}
+  function refreshMicDiagnostics(){
+    if(!connected||mode!=='voice')return;
+    const packets=micPackets;
+    $('mic-meter-fill').style.width=Math.min(100,Math.round(micLevel*600))+'%';
+    $('mic-detail').textContent=packets+' ljudpaket skickade · '+micAudiblePackets+' med mätbart ljud · högsta nivå '+Math.round(micPeak*1000)/10+' %.';
+    if(micPaused)$('mic-health').textContent='⏸ Mikrofonöverföringen pausad – väntar på svar';
+    else if(!packets&&Date.now()-voiceActiveAt>2500)$('mic-health').textContent='⚠️ Inga ljudpaket skickas från webbläsaren';
+    else if(packets&&Date.now()-lastPacketAt>1800)$('mic-health').textContent='⚠️ Mikrofonen har slutat skicka ljud';
+    else if(packets>35&&!micAudiblePackets)$('mic-health').textContent='⚠️ Ljudpaket skickas, men verkar vara tysta. Kontrollera mikrofonen.';
+    else if(packets)$('mic-health').textContent='🎙 Mikrofonen skickar ljud – tala nu!';
+    else $('mic-health').textContent='Startar ljudströmmen…';
+  }
+  async function beginMic(){
+    micPackets=0;micAudiblePackets=0;micLevel=0;micPeak=0;micPaused=false;lastPacketAt=0;voiceActiveAt=Date.now();
+    $('mic-diagnostics').hidden=false;refreshMicDiagnostics();
+    const track=mic.getAudioTracks()[0];
+    if(!track||track.readyState!=='live')throw Error('Mikrofonspåret är inte aktivt.');
+    track.onended=()=>{if(connected&&!stopRequested)end('Mikrofonen kopplades bort. Kontrollera behörigheten i Samsung Internet.')};
+    micSource=micCtx.createMediaStreamSource(mic);
+    processor=micCtx.createScriptProcessor(4096,1,1);
+    mutedGain=micCtx.createGain();
+    // Very low nonzero output keeps this legacy processor alive on some mobile browsers.
+    mutedGain.gain.value=0.00001;
+    processor.onaudioprocess=e=>{
+      const samples=e.inputBuffer.getChannelData(0);
+      let power=0,count=0;
+      for(let i=0;i<samples.length;i+=16){power+=samples[i]*samples[i];count++}
+      micLevel=Math.sqrt(power/Math.max(1,count));
+      micPeak=Math.max(micPeak,micLevel);
+      if(!connected||micPaused||!ws||ws.readyState!==WebSocket.OPEN||ws.bufferedAmount>256000)return;
+      const data=downsample(samples,micCtx.sampleRate);
+      if(!data.length)return;
+      ws.send(JSON.stringify({realtimeInput:{audio:{data:b64(data),mimeType:'audio/pcm;rate=16000'}}}));
+      micPackets++;if(micLevel>.001)micAudiblePackets++;lastPacketAt=Date.now();
+    };
+    micSource.connect(processor);processor.connect(mutedGain);mutedGain.connect(micCtx.destination);
+    micDiagnosticTimer=setInterval(refreshMicDiagnostics,250);
+  }
+  function syncClock(){const left=Math.max(0,Math.ceil((expiresAt-Date.now())/1000));$('timer').textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0');if(left===0)end('Tre minuter har gått – testet avslutades automatiskt.')}
+  function scheduleEnd(){clock=setInterval(syncClock,500);syncClock();expiryTimer=setTimeout(()=>end('Tre minuter har gått – testet avslutades automatiskt.'),Math.max(0,expiresAt-Date.now()))}
+  async function begin(which){
+    if(connecting||connected)return;
+    if(!configured&&!$('api-key').value.trim()){showError('Klistra in din Gemini API-nyckel i det privata fältet ovanför knapparna.');$('api-key').focus();return}
+    if(!('WebSocket' in window)){showError('Webbläsaren saknar WebSocket-stöd.');return}
+    if(which==='voice'&&!navigator.mediaDevices?.getUserMedia){showError('Mikrofon stöds inte här. Välj Testa med text.');return}
+    if(which==='speech'&&!speechToTextAvailable()){showError('Den här versionen av Samsung Internet saknar taligenkänning. Du kan ändå använda tangentbordets mikrofon i textrutan i läget Testa med text.');return}
+    if(tabs)tabs.postMessage({type:'new-session'});
+    connecting=true;stopRequested=false;failedStart=false;mode=which;clearError();updateControls();status('Öppnar privat samtal…');
+    try{
+      outCtx=new(window.AudioContext||window.webkitAudioContext)();await outCtx.resume();
+      if(which==='voice'){mic=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true},video:false});micCtx=new(window.AudioContext||window.webkitAudioContext)();await micCtx.resume()}
+      const apiKey=configured?undefined:$('api-key').value.trim();
+      const r=await fetch('/api/session',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify({animal,apiKey}),cache:'no-store'});
+      const j=await r.json();if(!r.ok)throw Error(j.error||'Gemini kunde inte öppna samtalet');
+      voiceSession=j;expiresAt=new Date(j.expiresAt).getTime();
+      const endpoint='wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained?access_token='+encodeURIComponent(j.token);
+      ws=new WebSocket(endpoint);ws.onopen=()=>{if(stopRequested)return;ws.send(JSON.stringify({setup:{model:'models/'+j.model,generationConfig:{responseModalities:['AUDIO'],speechConfig:{voiceConfig:{prebuiltVoiceConfig:{voiceName:j.voice}}}},systemInstruction:{parts:[{text:j.prompt}]},inputAudioTranscription:{},outputAudioTranscription:{}}}))};
+      ws.onmessage=async e=>{try{const data=typeof e.data==='string'?e.data:await e.data.text();const m=JSON.parse(data);if(m.setupComplete){connecting=false;connected=true;updateControls();resetLog();scheduleEnd();$('speech-diagnostics').hidden=which!=='speech';$('mic-diagnostics').hidden=which!=='voice';$('speech-transcript').textContent='Väntar på ditt tal…';$('speech-health').textContent='Tryck på Tala in och säg något på svenska.';$('live-transcript').textContent='Ingen transkription ännu…';$('live-note').textContent='När Gemini känner igen tal ska texten visas här.';if(which==='voice'){try{await beginMic()}catch(err){end('Mikrofonen kunde inte startas: '+short(err.message,100));return}}status(which==='voice'?'Jag lyssnar – prata nu!':which==='speech'?'Tryck på ”Tala in” och säg hej!':'Skriv din första fråga',true);return}const sc=m.serverContent;if(!sc)return;if(sc.interrupted)clearSound();if(sc.interimInputTranscription?.text&&mode==='voice'){$('live-transcript').textContent=short(sc.interimInputTranscription.text,500);$('live-note').textContent='Gemini håller på att tolka ditt tal…'}if(sc.inputTranscription?.text){clearTimeout(transcriptionTimeout);transcriptionTimeout=null;lastInputAt=Date.now();if(mode==='voice'){$('live-transcript').textContent=short(sc.inputTranscription.text,500);$('live-note').textContent='✓ Gemini uppfattade ditt tal.'}log('Du',sc.inputTranscription.text)}if(sc.outputTranscription?.text){log(animals[animal].name,sc.outputTranscription.text)}if(sc.modelTurn?.parts){for(const p of sc.modelTurn.parts){if(p.inlineData?.data){if(lastInputAt){$('latency').textContent=((Date.now()-lastInputAt)/1000).toFixed(1)+' s';lastInputAt=0}playAudio(p.inlineData.data)}}}if(sc.turnComplete){turns++;$('turns').textContent=turns;if(micPaused){micPaused=false;$('finish-speech').textContent='✓ Jag har pratat klart';refreshMicDiagnostics()}}}catch(err){showError('Kunde inte bearbeta ett ljudsvar: '+short(err.message,90))}};
+      ws.onerror=()=>{if(!stopRequested){showError('Anslutningen till Gemini misslyckades. Försök igen.');failedStart=true}};
+      ws.onclose=()=>{if(!stopRequested)end(failedStart?'Anslutningen kunde inte startas.':'Gemini avslutade anslutningen.')};
+    }catch(err){end('Det gick inte att börja: '+short(err.message,180))}
+  }
+  function end(reason){stopRequested=true;connecting=false;connected=false;clearInterval(clock);clearTimeout(expiryTimer);clearInterval(micDiagnosticTimer);clearTimeout(transcriptionTimeout);clock=null;expiryTimer=null;micDiagnosticTimer=null;transcriptionTimeout=null;micPaused=false;if(recognition){recognition.onend=null;recognition.onerror=null;recognition.onresult=null;try{recognition.abort()}catch{}recognition=null}recognizing=false;$('recognize-speech').textContent='🎙 Tala in';$('finish-speech').textContent='✓ Jag har pratat klart';if(ws){try{ws.close()}catch{}ws=null}if(processor){processor.disconnect();processor.onaudioprocess=null;processor=null}if(micSource){micSource.disconnect();micSource=null}if(mutedGain){mutedGain.disconnect();mutedGain=null}if(mic){mic.getTracks().forEach(t=>{t.onended=null;t.stop()});mic=null}if(micCtx){micCtx.close().catch(()=>{});micCtx=null}clearSound();if(outCtx){outCtx.close().catch(()=>{});outCtx=null}voiceSession=null;$('mic-diagnostics').hidden=true;$('speech-diagnostics').hidden=true;$('mic-meter-fill').style.width='0%';updateControls();status('Samtalet är avslutat');$('timer').textContent='03:00 max';if(reason)showError(reason)}
+  $('start-stt').addEventListener('click',()=>begin('speech'));
+  $('start-voice').addEventListener('click',()=>begin('voice'));
+  $('start-text').addEventListener('click',()=>begin('text'));
+  $('recognize-speech').addEventListener('click',()=>{if(recognizing){try{recognition.stop()}catch{}return}startRecognition()});
+  $('finish-speech').addEventListener('click',()=>{if(!connected||mode!=='voice'||ws?.readyState!==WebSocket.OPEN)return;if(micPaused){micPaused=false;clearTimeout(transcriptionTimeout);transcriptionTimeout=null;$('finish-speech').textContent='✓ Jag har pratat klart';status('Mikrofonen öppen igen – tala nu!',true);refreshMicDiagnostics();return}micPaused=true;ws.send(JSON.stringify({realtimeInput:{audioStreamEnd:true}}));$('finish-speech').textContent='↻ Prata igen';status('Tal skickat – väntar på Gemini…',true);$('live-note').textContent='Väntar på transkription från Gemini…';refreshMicDiagnostics();clearTimeout(transcriptionTimeout);transcriptionTimeout=setTimeout(()=>{if(connected&&mode==='voice'&&micPaused&&$('live-transcript').textContent==='Ingen transkription ännu…')$('live-note').textContent='⚠️ Ingen text från Gemini efter 7 sekunder. Testa tal-till-text-läget för att undersöka om Samsung hör dig.'},7000)});
+  $('clear-api-key').addEventListener('click',()=>{$('api-key').value='';clearError();status('Ange din Gemini-nyckel för att testa');$('api-key').focus()});
+  $('end').addEventListener('click',()=>end('Du avslutade testet.'));
+  $('chat-form').addEventListener('submit',e=>{e.preventDefault();const text=$('chat-input').value.trim();if(sendTextMessage(text))$('chat-input').value=''});
+  $('preview').addEventListener('click',()=>{if(!('speechSynthesis' in window)){showError('Demorösten stöds inte i den här webbläsaren.');return}speechSynthesis.cancel();const say=new SpeechSynthesisUtterance(animals[animal].sample);say.lang='sv-SE';say.rate=animal==='duck'?1.12:.95;say.pitch=animal==='duck'?1.38:1.05;say.onstart=()=>$('stage').classList.add('is-speaking');say.onend=()=>$('stage').classList.remove('is-speaking');say.onerror=()=>$('stage').classList.remove('is-speaking');speechSynthesis.speak(say)});
+  window.addEventListener('pagehide',()=>{if(connected||connecting)end();$('api-key').value=''});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&(connected||connecting))end('Testet stoppades när du lämnade fliken, för att spara gratisresurser.')});
+  updateControls();choose('fox');check();
+})();
+</script>
+</body>
+</html>
