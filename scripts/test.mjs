@@ -33,6 +33,8 @@ assert.ok(html.includes('webkitSpeechRecognition'));
 assert.ok(html.includes('class="fox-ear left"'));
 assert.equal((html.match(/class="eyelid"/g)||[]).length,4);
 assert.ok(html.includes('outAnalyser.getByteTimeDomainData'));
+assert.ok(html.includes("const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches"));
+assert.ok(html.includes('String(reduced ? 0.16 : level)'));
 assert.ok(html.includes('audioSegments.some(seg=>seg.start<=now&&now<seg.end)'));
 assert.ok(html.includes('setTimeout(blink,2300+Math.random()*4200)'));
 assert.ok(html.includes("say.onstart=()=>$('stage').classList.add('is-previewing')"));
