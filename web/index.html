@@ -135,7 +135,7 @@
   async function check(){try{const r=await fetch('/api/status',{cache:'no-store'});if(!r.ok)throw Error('Status saknas');const j=await r.json();configured=Boolean(j.ready);$('secret-box').hidden=configured;status(configured?'Gemini redo för privat test':'Ange din Gemini-nyckel för att testa');}catch{status('Kunde inte kontrollera servern');showError('Kontroll av AI-anslutningen misslyckades.')}}
   function b64(bytes){let s='';for(let i=0;i<bytes.length;i+=8192)s+=String.fromCharCode.apply(null,bytes.subarray(i,i+8192));return btoa(s)}
   function fromBase64(s){const binary=atob(s),out=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)out[i]=binary.charCodeAt(i);return out}
-  function setMouth(level){$('stage').style.setProperty('--mouth-open',String(level))}
+  function setMouth(level){const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;$('stage').style.setProperty('--mouth-open',String(reduced ? 0.16 : level))}
   function blink(){
     const hero=$(animal==='fox'?'fox-hero':'duck-hero');
     if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
