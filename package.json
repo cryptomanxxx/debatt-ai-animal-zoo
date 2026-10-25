@@ -1,0 +1,10 @@
+{
+  "name": "debatt-ai-animal-zoo-private-lab",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/dev.mjs",
+    "test": "node scripts/test.mjs"
+  }
+}
