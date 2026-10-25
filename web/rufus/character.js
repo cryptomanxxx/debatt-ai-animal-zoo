@@ -11,6 +11,16 @@ export function createRufus() {
     ['iris',0x9b4916,.34],['pupil',0x080c10,.18],['mouth',0x371b24,.9],
     ['tongue',0xcb7175,.68],['ear',0xc88c75,.9]
   ]) materials[name] = new T.MeshStandardMaterial({color,roughness});
+  // Fine combed coat relief, generated once; no texture download or canvas API.
+  const pixels=new Uint8Array(256*256*4);
+  for(let y=0;y<256;y++)for(let x=0;x<256;x++) {
+    const grain=Math.sin(x*7.7+Math.sin(y*.12)*.7)*Math.sin(y*.57+x*2.1);
+    const value=Math.round(210+grain*32),i=(y*256+x)*4;
+    pixels[i]=pixels[i+1]=pixels[i+2]=value;pixels[i+3]=255;
+  }
+  const coatTexture=new T.DataTexture(pixels,256,256);coatTexture.wrapS=coatTexture.wrapT=T.RepeatWrapping;
+  coatTexture.repeat.set(3,2);coatTexture.needsUpdate=true;
+  for(const key of ['fur','gold','cream','dark']){materials[key].map=coatTexture;materials[key].bumpMap=coatTexture;materials[key].bumpScale=.018;}
   const mesh = (parent,mat,p,s) => {
     const m = new T.Mesh(sphere,materials[mat]);m.position.set(...p);m.scale.set(...s);parent.add(m);return m;
   };
@@ -25,11 +35,11 @@ export function createRufus() {
     const paw=mesh(arm,'dark',[side*.14,-.55,.33],[.23,.24,.19]);paw.rotation.z=side*.4;
     for(let i=0;i<3;i++)mesh(arm,'dark',[side*.14+(i-1)*.11,-.46,.46],[.075,.125,.085]);
     mesh(arm,'dark',[side*-.035,-.57,.44],[.095,.15,.10]);
-    arm.rotation.x=-.43;arm.rotation.z=side*.16;
+    arm.rotation.x=-.43;arm.rotation.z=side<0?-.22:.48;
   }
-  const tail=new T.Group();tail.position.set(-.46,-.1,-.23);root.add(tail);
-  const tailBody=mesh(tail,'fur',[-.39,.08,0],[.38,.76,.30]);tailBody.rotation.z=-.9;
-  const tip=mesh(tail,'cream',[-.87,.49,0],[.24,.40,.24]);tip.rotation.z=-.8;
+  const tail=new T.Group();tail.position.set(-.68,.05,-.23);tail.rotation.z=.8;root.add(tail);
+  const tailBody=mesh(tail,'fur',[0,.20,0],[.29,.66,.27]);
+  const tip=mesh(tail,'cream',[0,.82,0],[.23,.35,.23]);
   head.position.set(0,1.47,.07);root.add(head);
   mesh(head,'fur',[0,.18,0],[.76,.70,.48]);
   // Wide cheek silhouette, a tapered forehead and layered cheek tufts.
@@ -39,7 +49,7 @@ export function createRufus() {
   }
   const ears=[];
   for(const side of [-1,1]) {
-    const ear=new T.Group();ear.position.set(side*.48,.59,0);ear.rotation.z=-side*.22;head.add(ear);ears.push(ear);
+    const ear=new T.Group();ear.position.set(side*.48,.59,0);ear.rotation.z=-side*.30;ear.scale.y=.88;head.add(ear);ears.push(ear);
     // Curved triangular ear rather than cone primitives.
     const shape=new T.Shape();shape.moveTo(-.25,0);shape.bezierCurveTo(-.25,.23,-.12,.62,0,.81);shape.bezierCurveTo(.14,.64,.26,.25,.25,0);shape.quadraticCurveTo(0,-.09,-.25,0);
     const geo=new T.ExtrudeGeometry(shape,{depth:.105,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:.055,bevelThickness:.055,curveSegments:12});
@@ -64,8 +74,8 @@ export function createRufus() {
     mesh(iris,'white',[.037,-.046,.069],[.011,.014,.008]);
     // Eyelid shells cover the eye along an arc, not a flat rectangle.
     const lidGeo=new T.SphereGeometry(1,32,20,0,Math.PI*2,0,Math.PI/2);
-    const lid=new T.Mesh(lidGeo,materials.fur);lid.scale.set(.258,.296,.202);lid.position.z=.012;lid.rotation.x=-1.48;eye.add(lid);lids.push(lid);
-    const brow=mesh(head,'dark',[side*.30,.53,.38],[.23,.055,.07]);brow.rotation.z=-side*.28;brows.push(brow);
+    const lid=new T.Mesh(lidGeo,materials.fur);lid.scale.set(.258,.296,.27);lid.position.z=.012;lid.rotation.x=-1.48;eye.add(lid);lids.push(lid);
+    const brow=mesh(head,'dark',[side*.30,.53,.38],[.23,.055,.07]);brow.rotation.z=-side*.12;brows.push(brow);
   }
   // Mouth interior is stationary; the lower jaw rotates from behind the muzzle.
   mesh(head,'mouth',[0,-.34,.47],[.28,.19,.17]);
@@ -101,31 +111,32 @@ export function createRufus() {
       const dir=normal.clone().add(new T.Vector3(x*.18,-.36,0)).normalize();
       const len=length*(.6+random()*.65);
       dummy.position.set(center[0]+x*radii[0]+normal.x*len*.22,center[1]+y*radii[1]+normal.y*len*.22,center[2]+z*radii[2]+normal.z*len*.22);
-      dummy.quaternion.setFromUnitVectors(up,dir);dummy.scale.set(len*.13,len,len*.09);dummy.updateMatrix();fur.setMatrixAt(placed,dummy.matrix);
+      dummy.quaternion.setFromUnitVectors(up,dir);dummy.scale.set(len*.07,len,len*.045);dummy.updateMatrix();fur.setMatrixAt(placed,dummy.matrix);
       color.setHex(0xffffff).multiplyScalar(.75+random()*.35);fur.setColorAt(placed,color);placed++;
     }
     fur.count=placed;fur.instanceMatrix.needsUpdate=true;parent.add(fur);
   }
-  coat(root,[0,.45,0],[.67,.99,.40],2600,'fur',.085,(_x,_y,z)=>z<.65);
-  coat(root,[0,.55,.335],[.43,.79,.17],1300,'cream',.065,(_x,_y,z)=>z>0);
-  coat(head,[0,.18,0],[.76,.70,.48],2200,'fur',.075,(x,y,z)=>z<.45||y>.55||Math.abs(x)>.85);
+  coat(root,[0,.45,0],[.67,.99,.40],2600,'fur',.05,(_x,_y,z)=>z<.65);
+  coat(root,[0,.55,.335],[.43,.79,.17],1300,'cream',.04,(_x,_y,z)=>z>0);
+  coat(head,[0,.18,0],[.76,.70,.48],2200,'fur',.05,(x,y,z)=>z<.45||y>.55||Math.abs(x)>.85);
   for(const side of [-1,1]) {
-    coat(head,[side*.52,-.10,.10],[.37,.40,.37],700,'gold',.10,(x,_y,z)=>side*x>0||z<0);
-    coat(head,[side*.44,-.24,.35],[.40,.24,.26],650,'cream',.07,(x,_y,z)=>side*x>.15||z>.45);
+    coat(head,[side*.52,-.10,.10],[.37,.40,.37],700,'gold',.07,(x,_y,z)=>side*x>0||z<0);
+    coat(head,[side*.44,-.24,.35],[.40,.24,.26],650,'cream',.045,(x,_y,z)=>side*x>.15||z>.45);
   }
-  coat(tail,[-.39,.08,0],[.38,.76,.30],800,'fur',.09);
+  coat(tail,[0,.20,0],[.29,.66,.27],500,'fur',.06);
+  coat(tail,[0,.82,0],[.23,.35,.23],300,'cream',.05);
   // Crown quiff, swept to one side.
   for(let i=0;i<7;i++) {
-    const tuft=mesh(head,'gold',[-.23+i*.062,.78+Math.sin(i*.5)*.08,.03],[.055,.21,.09]);tuft.rotation.z=-.5+i*.07;
+    const tuft=mesh(head,'gold',[-.23+i*.062,.77+Math.sin(i*.5)*.035,.03],[.045,.12,.07]);tuft.rotation.z=-.5+i*.07;
   }
   return {root,apply(p){
-    head.rotation.set(p.pitch,p.yaw,p.tilt);root.scale.y=1+p.breath;
-    jaw.rotation.x=p.jaw*.42;jaw.position.y=-.30-p.jaw*.055;
-    lids.forEach(l=>l.rotation.x=-1.48+p.blink*1.50);
+    head.rotation.set(p.pitch,p.yaw,p.tilt-.07);root.scale.y=1+p.breath;
+    jaw.rotation.x=.06+p.jaw*.42;jaw.position.y=-.32-p.jaw*.055;
+    lids.forEach(l=>l.rotation.x=-1.48+p.blink*3.05);
     irises.forEach(i=>{i.position.x=(i.parent.position.x>0?-.022:.022)+p.gazeX;i.position.y=-.015+p.gazeY});
     brows.forEach((b,i)=>{b.position.y=.53+p.brow*(i?1:.55)});
-    ears[0].rotation.z=.22+p.ear;ears[1].rotation.z=-.22-p.ear*.65;
+    ears[0].rotation.z=.30+p.ear;ears[1].rotation.z=-.30-p.ear*.65;
     arms[0].rotation.x=-.43-p.paw;arms[1].rotation.x=-.43+p.paw*.5;
-    tail.rotation.z=p.breath*4;
+    tail.rotation.z=.8+p.breath*4;
   }};
 }

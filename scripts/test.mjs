@@ -185,3 +185,4 @@ try{
 console.log('Animal Zoo: private-site, sanitized provider reasons, minimal token fallback and Gemini session checks passed.');
 
 await import('./test-rufus.mjs');
+await import('./test-rufus-lifecycle.mjs');

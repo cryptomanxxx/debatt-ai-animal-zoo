@@ -2,11 +2,11 @@ import * as T from 'three';
 import {createRufus} from './character.js';
 import {poseAt} from './motion.js';
 
-export function mountRufus(stage) {
+export function mountRufus(stage, rendererFactory = options => new T.WebGLRenderer(options)) {
   const canvas=document.createElement('canvas');canvas.className='rufus-canvas';
   canvas.setAttribute('role','img');canvas.setAttribute('aria-label','Rufus, en animerad 3D-räv i en skogsglänta');
   let renderer;
-  try{renderer=new T.WebGLRenderer({canvas,alpha:false,antialias:false,powerPreference:'low-power'});}catch{return ()=>{}}
+  try{renderer=rendererFactory({canvas,alpha:false,antialias:false,powerPreference:'low-power'});}catch{return ()=>{}}
   const scene=new T.Scene();scene.background=new T.Color(0x10282b);scene.fog=new T.FogExp2(0x10282b,.085);
   const camera=new T.PerspectiveCamera(35,1,.1,35);camera.position.set(0,1.45,6.1);camera.lookAt(0,1.18,0);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));
@@ -63,13 +63,15 @@ export function mountRufus(stage) {
   const intersection=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;sync()});intersection.observe(stage);
   document.addEventListener('visibilitychange',sync);stage.addEventListener('pointermove',pointer,{passive:true});stage.addEventListener('pointerleave',leave);
   canvas.addEventListener('webglcontextlost',contextLost);canvas.addEventListener('webglcontextrestored',contextRestored);reduced.addEventListener('change',sync);
-  stage.append(canvas);resize();renderer.render(scene,camera);stage.setAttribute('data-rufus-ready','');start();
-  return function dispose(){
+  function dispose(){
     if(disposed)return;disposed=true;stop();sizeObserver.disconnect();stateObserver.disconnect();intersection.disconnect();
     document.removeEventListener('visibilitychange',sync);stage.removeEventListener('pointermove',pointer);stage.removeEventListener('pointerleave',leave);
     canvas.removeEventListener('webglcontextlost',contextLost);canvas.removeEventListener('webglcontextrestored',contextRestored);reduced.removeEventListener('change',sync);
     const geometries=new Set(),materials=new Set();scene.traverse(o=>{if(o.geometry)geometries.add(o.geometry);if(o.material)(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>materials.add(m))});
-    geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());renderer.dispose();canvas.remove();stage.removeAttribute('data-rufus-ready');
-  };
+    geometries.forEach(g=>g.dispose());const textures=new Set();materials.forEach(m=>{for(const v of Object.values(m))if(v?.isTexture)textures.add(v);m.dispose()});textures.forEach(t=>t.dispose());renderer.dispose();canvas.remove();stage.removeAttribute('data-rufus-ready');
+  }
+  try { stage.append(canvas);resize();renderer.render(scene,camera);stage.setAttribute('data-rufus-ready','');start(); }
+  catch { dispose(); }
+  return dispose;
 }
 
