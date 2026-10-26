@@ -1,6 +1,9 @@
 // Debatt-AI Animal Zoo: owner-private Cloudflare Worker.
 // The build script replaces this constant with the local HTML asset.
 const PAGE_HTML = "__ANIMAL_ZOO_HTML_PLACEHOLDER__";
+// Rigged Rufus model (base64), or "" when the build found no assets/rufus/rufus.glb.
+const RUFUS_GLB_BASE64 = "__RUFUS_GLB_BASE64_PLACEHOLDER__";
+let rufusGlb = null;
 
 const MODEL = "gemini-3.8-live";
 const SESSION_MS = 3 * 60 * 1000;
@@ -99,6 +102,17 @@ export default {
           "referrer-policy": "no-referrer",
           "x-content-type-options": "nosniff",
           "permissions-policy": "microphone=(self), camera=()"
+        }
+      });
+    }
+
+    if (request.method === "GET" && url.pathname === "/rufus.glb" && RUFUS_GLB_BASE64) {
+      rufusGlb ||= Uint8Array.from(atob(RUFUS_GLB_BASE64), c => c.charCodeAt(0));
+      return new Response(rufusGlb, {
+        headers: {
+          "content-type": "model/gltf-binary",
+          "cache-control": "private, max-age=3600",
+          "x-content-type-options": "nosniff"
         }
       });
     }

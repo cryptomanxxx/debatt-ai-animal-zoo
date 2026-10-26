@@ -1,0 +1,45 @@
+{
+  "comment": "Landmarks for the Tripo 'cartoon fox' GLB, in its own metres: +Y up, Rufus faces +Z, his left is +X. Measured from orthographic renders and vertex slices of the source. Re-measure if the source model changes.",
+  "bones": {
+    "Hips":       {"head": [0.02, 0.30, 0.12], "segment": [[0.02, 0.00, 0.12], [0.02, 0.36, 0.12]]},
+    "Spine":      {"parent": "Hips",  "head": [0.02, 0.40, 0.13]},
+    "Chest":      {"parent": "Spine", "head": [0.02, 0.52, 0.14]},
+    "Neck":       {"parent": "Chest", "head": [0.00, 0.62, 0.15]},
+    "Head":       {"parent": "Neck",  "head": [-0.04, 0.69, 0.17], "tail": [-0.05, 0.92, 0.20]},
+    "Ear.L.1":    {"parent": "Head",  "head": [0.012, 0.875, 0.20]},
+    "Ear.L.2":    {"parent": "Ear.L.1", "head": [0.012, 0.935, 0.22], "tail": [0.014, 0.995, 0.24]},
+    "Ear.R.1":    {"parent": "Head",  "head": [-0.15, 0.845, 0.20]},
+    "Ear.R.2":    {"parent": "Ear.R.1", "head": [-0.20, 0.875, 0.185], "tail": [-0.248, 0.90, 0.175]},
+    "UpperArm.L": {"parent": "Chest", "head": [0.10, 0.60, 0.15]},
+    "Forearm.L":  {"parent": "UpperArm.L", "head": [0.20, 0.51, 0.21]},
+    "Hand.L":     {"parent": "Forearm.L", "head": [0.27, 0.51, 0.27], "tail": [0.38, 0.51, 0.27]},
+    "UpperArm.R": {"parent": "Chest", "head": [-0.08, 0.60, 0.16]},
+    "Forearm.R":  {"parent": "UpperArm.R", "head": [-0.19, 0.51, 0.26]},
+    "Hand.R":     {"parent": "Forearm.R", "head": [-0.27, 0.54, 0.30], "tail": [-0.38, 0.56, 0.31]},
+    "Tail.1":     {"parent": "Hips", "head": [0.00, 0.26, 0.02]},
+    "Tail.2":     {"parent": "Tail.1", "head": [-0.10, 0.23, -0.10]},
+    "Tail.3":     {"parent": "Tail.2", "head": [-0.19, 0.29, -0.17]},
+    "Tail.4":     {"parent": "Tail.3", "head": [-0.26, 0.36, -0.26], "tail": [-0.35, 0.40, -0.33]}
+  },
+  "head_volume": {"center": [-0.05, 0.80, 0.20], "radii": [0.20, 0.17, 0.22], "min_y": [0.645, 0.675]},
+  "ears": {
+    "Ear.L": {"base": [0.012, 0.875, 0.20], "tip": [0.014, 0.995, 0.24], "radius": [0.075, 0.03], "min_y": 0.84},
+    "Ear.R": {"base": [-0.15, 0.845, 0.20], "tip": [-0.248, 0.90, 0.175], "radius": [0.06, 0.02], "min_y": 0.80}
+  },
+  "tail": {"max_distance": 0.21, "max_z": 0.03},
+  "jaw": {
+    "hinge": [-0.055, 0.712, 0.235],
+    "mouth_line": {"x": -0.07, "y": 0.704, "z": 0.30, "slope_x": 0.3, "slope_z": -0.2},
+    "roll_degrees": 16.7,
+    "min_z": [0.215, 0.26],
+    "half_width": [0.07, 0.10],
+    "min_y": [0.655, 0.668],
+    "open_degrees": 18
+  },
+  "eyes": {
+    "eyeBlinkLeft":  {"center": [-0.003, 0.802], "radii": [0.030, 0.032]},
+    "eyeBlinkRight": {"center": [-0.118, 0.772], "radii": [0.025, 0.027]},
+    "roll_degrees": 14.6,
+    "depth": 0.035
+  }
+}

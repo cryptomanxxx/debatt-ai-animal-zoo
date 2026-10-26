@@ -3,3 +3,7 @@ node_modules/
 .env
 .env.*
 *.tar.gz
+
+# Rufus model files: check the licence before publishing them
+assets/rufus/*.glb
+__pycache__/

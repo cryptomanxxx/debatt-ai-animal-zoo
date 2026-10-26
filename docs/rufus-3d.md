@@ -10,6 +10,11 @@ Three.js/WebGL2 renders an original, procedural articulated fox portrait. The mo
 - `web/rufus/motion.js`: deterministic pose calculation, separately tested.
 - `web/rufus/scene.js`: lighting, camera, frame scheduling and lifecycle.
 - `web/rufus/entry.js`: isolated startup and BFCache restoration.
+- `web/rufus/glb.js`: maps the same pose onto the rigged GLB (`jawOpen` and blink morph targets; head, neck, ear, arm and tail joints).
+
+### Rigged GLB (optional)
+
+When `assets/rufus/rufus.glb` exists at build time (see `docs/rigging-plan.md`), `npm run build` embeds it in the Worker, serves it at `/rufus.glb` and bundles Three's `GLTFLoader`. The page first renders the procedural fox, loads the GLB, and swaps it in once it validates (`data-rufus-model="glb"` on the stage). A missing file, a failed download or a model without the talking joints or morph targets keeps the procedural fox. The build refuses models over 3 MB. Without the file, CI and the default build behave as before and `/rufus.glb` returns 404. The embedded model makes the Worker script about 3 MB larger; check the host's script size limit before deploying it.
 
 The renderer reads the existing stage classes and `--mouth-open` written by the played-PCM analyser. It does not access the microphone, WebSocket, session tokens or API keys. It never connects an extra audio output. Mouth movement follows amplitude, **not phoneme-level lip synchronization**. The browser's demo voice uses a synthetic talking cycle because browser speech synthesis exposes no PCM stream.
 
