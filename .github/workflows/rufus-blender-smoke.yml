@@ -16,10 +16,10 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Install headless Blender
+      - name: Install headless Blender and GLB exporter dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends blender
+          sudo apt-get install -y --no-install-recommends blender python3-numpy
           blender --version
       - name: Verify synthetic GLB and facial morph roundtrip
         run: |
