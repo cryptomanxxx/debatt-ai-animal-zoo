@@ -17,3 +17,5 @@ jobs:
         run: node scripts/build.mjs
       - name: Run tests
         run: node scripts/test.mjs
+      - name: Validate Blender script syntax
+        run: python3 -c "import ast; from pathlib import Path; ast.parse(Path('scripts/rig_rufus.py').read_text())"

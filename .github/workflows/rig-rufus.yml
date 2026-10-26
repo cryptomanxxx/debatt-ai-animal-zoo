@@ -1,0 +1,38 @@
+name: Rig Rufus GLB (experimental)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rig:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Locate source model
+        run: |
+          test -s assets/rufus/source.glb || {
+            echo "::error::Upload the original GLB to assets/rufus/source.glb first."
+            exit 1
+          }
+      - name: Install headless Blender
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender
+          blender --version
+      - name: Repair weights and export GLB candidate
+        run: |
+          mkdir -p dist/rufus
+          blender --background --factory-startup --threads 2 \
+            --python scripts/rig_rufus.py -- \
+            assets/rufus/source.glb dist/rufus/rufus-rigged.glb
+      - name: Upload candidate for inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: rufus-rigged-candidate
+          path: dist/rufus/rufus-rigged.glb
+          if-no-files-found: error
+          retention-days: 14
