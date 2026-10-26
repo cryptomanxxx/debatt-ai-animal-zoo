@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { Script } from 'node:vm';
+import { existsSync, readFileSync } from 'node:fs';
 import zoo from '../dist/server/index.js';
 
 const base = 'https://example.chatgpt.site';
@@ -12,6 +13,14 @@ const post = (animal, headers={}, extra={}) => new Request(base+'/api/session',{
 const status=await zoo.fetch(new Request(base+'/api/status'),{});
 assert.equal(status.status,200);
 assert.equal((await status.json()).ready,false);
+
+// The rigged model is served only when the build found assets/rufus/rufus.glb (git-ignored, absent in CI).
+const model=await zoo.fetch(new Request(base+'/rufus.glb'),{});
+const localModel=new URL('../assets/rufus/rufus.glb',import.meta.url);
+if(existsSync(localModel)){
+  assert.equal(model.status,200);assert.equal(model.headers.get('content-type'),'model/gltf-binary');
+  assert.deepEqual(new Uint8Array(await model.arrayBuffer()),new Uint8Array(readFileSync(localModel)));
+}else assert.equal(model.status,404);
 
 const page=await zoo.fetch(new Request(base+'/'),{});
 assert.equal(page.status,200);
@@ -186,3 +195,4 @@ console.log('Animal Zoo: private-site, sanitized provider reasons, minimal token
 
 await import('./test-rufus.mjs');
 await import('./test-rufus-lifecycle.mjs');
+await import('./test-rufus-glb.mjs');

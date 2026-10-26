@@ -18,6 +18,9 @@ createServer((req,res)=>{
     res.writeHead(200,{'content-type':'text/html; charset=utf-8'});
     worker.fetch(new Request('http://localhost/'),{}).then(r=>r.text()).then(html=>res.end(html));
   }else{
-    res.writeHead(404);res.end('Not found');
+    // Everything else (e.g. /rufus.glb) is answered by the built Worker, as when hosted.
+    worker.fetch(new Request('http://localhost'+req.url,{method:req.method}),{}).then(async r=>{
+      res.writeHead(r.status,Object.fromEntries(r.headers));res.end(Buffer.from(await r.arrayBuffer()));
+    });
   }
 }).listen(port,'0.0.0.0',()=>console.log('Animal Zoo preview listening on '+port));

@@ -1,8 +1,18 @@
 import * as T from 'three';
 import {createRufus} from './character.js';
 import {poseAt} from './motion.js';
+import {createGlbRufus} from './glb.js';
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-export function mountRufus(stage, rendererFactory = options => new T.WebGLRenderer(options)) {
+const proceduralView={position:[0,1.45,6.1],target:[0,1.18,0],narrow:4.6};
+function disposeTree(object){
+  const geometries=new Set(),materials=new Set(),textures=new Set(),skeletons=new Set();
+  object.traverse(o=>{if(o.geometry)geometries.add(o.geometry);if(o.material)(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>materials.add(m));if(o.skeleton)skeletons.add(o.skeleton)});
+  geometries.forEach(g=>g.dispose());materials.forEach(m=>{for(const v of Object.values(m))if(v?.isTexture)textures.add(v);m.dispose()});textures.forEach(t=>t.dispose());skeletons.forEach(s=>s.dispose());
+}
+
+// modelUrl is set only when the build embedded a rigged GLB; otherwise the procedural fox stays.
+export function mountRufus(stage, rendererFactory = options => new T.WebGLRenderer(options), {modelUrl=null, loadModel=url=>new GLTFLoader().loadAsync(url)} = {}) {
   const canvas=document.createElement('canvas');canvas.className='rufus-canvas';
   canvas.setAttribute('role','img');canvas.setAttribute('aria-label','Rufus, en animerad 3D-räv i en skogsglänta');
   let renderer;
@@ -14,7 +24,7 @@ export function mountRufus(stage, rendererFactory = options => new T.WebGLRender
   scene.add(new T.HemisphereLight(0xc8e9ff,0x463121,2.1));
   const light=(color,intensity,p)=>{const l=new T.DirectionalLight(color,intensity);l.position.set(...p);scene.add(l)};
   light(0xffd6a0,3.0,[-3,4,4]);light(0xffa03d,3.3,[2,3,-2]);light(0xa3deff,.65,[3,1,3]);
-  const fox=createRufus();scene.add(fox.root);
+  let fox=createRufus(),view=proceduralView;scene.add(fox.root);
   // Low-cost forest set: trunks, canopy, mossy rocks, water and luminous motes.
   const trunkMat=new T.MeshStandardMaterial({color:0x293b35,roughness:1});
   const foliageMat=new T.MeshStandardMaterial({color:0x244f3c,roughness:1});
@@ -34,7 +44,7 @@ export function mountRufus(stage, rendererFactory = options => new T.WebGLRender
   let frame=0,disposed=false,lost=false,visible=true,last=0,elapsed=0,gazeX=0,gazeY=0,slowFrames=0,quality=1.5;
   function resize(){const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;
     // Keep ears and shoulders in frame even on narrow phones.
-    camera.position.z=Math.max(6.1,4.6/camera.aspect);camera.updateProjectionMatrix();}
+    camera.position.set(view.position[0],view.position[1],Math.max(view.position[2],view.narrow/camera.aspect));camera.lookAt(...view.target);camera.updateProjectionMatrix();}
   function active(){return !disposed&&!lost&&!document.hidden&&visible&&stage.classList.contains('fox')}
   function stop(){cancelAnimationFrame(frame);frame=0;last=0}
   function start(){if(active()&&!frame)frame=requestAnimationFrame(draw)}
@@ -67,11 +77,19 @@ export function mountRufus(stage, rendererFactory = options => new T.WebGLRender
     if(disposed)return;disposed=true;stop();sizeObserver.disconnect();stateObserver.disconnect();intersection.disconnect();
     document.removeEventListener('visibilitychange',sync);stage.removeEventListener('pointermove',pointer);stage.removeEventListener('pointerleave',leave);
     canvas.removeEventListener('webglcontextlost',contextLost);canvas.removeEventListener('webglcontextrestored',contextRestored);reduced.removeEventListener('change',sync);
-    const geometries=new Set(),materials=new Set();scene.traverse(o=>{if(o.geometry)geometries.add(o.geometry);if(o.material)(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>materials.add(m))});
-    geometries.forEach(g=>g.dispose());const textures=new Set();materials.forEach(m=>{for(const v of Object.values(m))if(v?.isTexture)textures.add(v);m.dispose()});textures.forEach(t=>t.dispose());renderer.dispose();canvas.remove();stage.removeAttribute('data-rufus-ready');
+    disposeTree(scene);renderer.dispose();canvas.remove();stage.removeAttribute('data-rufus-ready');
+  }
+  // Swap in the rigged GLB once it has loaded; any failure keeps the procedural fox.
+  function upgrade(gltf){
+    if(disposed){disposeTree(gltf.scene);return}
+    let next;
+    try{next=createGlbRufus(gltf)}catch{disposeTree(gltf.scene);return}
+    scene.remove(fox.root);disposeTree(fox.root);fox=next;view=next.view;scene.add(fox.root);
+    stage.setAttribute('data-rufus-model','glb');resize();start();
   }
   try { stage.append(canvas);resize();renderer.render(scene,camera);stage.setAttribute('data-rufus-ready','');start(); }
   catch { dispose(); }
+  if(modelUrl&&!disposed)Promise.resolve().then(()=>loadModel(modelUrl)).then(upgrade,()=>{});
   return dispose;
 }
 

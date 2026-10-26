@@ -38,3 +38,13 @@ Never paste a real key into the repository, commit history, or chat.
 Before any wider launch, configure `GEMINI_API_KEY` as a hosted runtime secret
 and remove the owner-key form. The isolate-local throttle is not a production
 rate limiter and this Site must remain owner-private while BYOK is enabled.
+
+## Development
+
+```sh
+npm ci && npm run build && npm test   # same as CI; CI also runs the Python rig tests
+npm run dev                            # local preview; /qa has viewport and speaking fixtures
+```
+
+Rufus is rendered with Three.js (`web/rufus/`). By default he is a procedural fox. With a rigged GLB from `npm run rig` he becomes the 3D model, with a jaw that opens on Gemini's played audio, blinks and moving ears and tail. See `docs/rufus-3d.md` and `docs/rigging-plan.md`.
+
