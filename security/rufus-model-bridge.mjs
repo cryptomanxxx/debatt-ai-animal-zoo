@@ -16,6 +16,8 @@ function decode(segment) {
   if (typeof segment !== 'string' || !/^[A-Za-z0-9_-]+$/.test(segment)) throw Error('Malformed JWT segment');
   const raw = segment.replace(/-/g, '+').replace(/_/g, '/');
   const bytes = atob(raw + '='.repeat((4 - raw.length % 4) % 4));
+  const canonical = btoa(bytes).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+  if (canonical !== segment) throw Error('Noncanonical JWT encoding');
   return Uint8Array.from(bytes, c => c.charCodeAt(0));
 }
 
