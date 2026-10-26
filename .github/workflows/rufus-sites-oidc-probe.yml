@@ -1,0 +1,64 @@
+name: Verify GitHub OIDC identity for private Sites integration
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  identity-only:
+    # No model access, uploads, Site credentials or deployment.
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Validate short-lived GitHub OIDC claims without logging token
+        env:
+          EXPECTED_REPO: cryptomanxxx/debatt-ai-animal-zoo
+          EXPECTED_REPO_ID: '1433538997'
+          EXPECTED_OWNER_ID: '48676920'
+          EXPECTED_AUDIENCE: debatt-ai-rufus-private-model
+        run: |
+          node <<'NODE'
+          const https = require('node:https');
+          const request = (url) => new Promise((resolve, reject) => {
+            const u = new URL(url);
+            if (u.protocol !== 'https:') return reject(Error('HTTPS required'));
+            const req = https.get(u, { headers: { Authorization: 'Bearer ' + process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN }, timeout: 10000 }, res => {
+              let body = ''; res.setEncoding('utf8');
+              res.on('data', chunk => { body += chunk; if (body.length > 16000) req.destroy(Error('Unexpected response size')); });
+              res.on('end', () => {
+                if (res.statusCode !== 200) return reject(Error('Token service returned HTTP ' + res.statusCode));
+                try { resolve(JSON.parse(body).value); } catch { reject(Error('Invalid token service response')); }
+              });
+            });
+            req.on('error', reject); req.on('timeout', () => req.destroy(Error('Token request timeout')));
+          });
+          (async () => {
+            const tokenEndpoint = process.env.ACTIONS_ID_TOKEN_REQUEST_URL;
+            if (!tokenEndpoint || !process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN) throw Error('GitHub OIDC unavailable');
+            const url = new URL(tokenEndpoint);
+            url.searchParams.set('audience', process.env.EXPECTED_AUDIENCE);
+            const token = await request(url.toString());
+            if (typeof token !== 'string' || token.split('.').length !== 3) throw Error('Missing JWT');
+            // Local inspection only; these claims are NOT trusted until a server verifies GitHub's RSA signature.
+            const claims = JSON.parse(Buffer.from(token.split('.')[1], 'base64url').toString('utf8'));
+            const expected = {
+              iss: 'https://token.actions.githubusercontent.com',
+              aud: process.env.EXPECTED_AUDIENCE,
+              repository: process.env.EXPECTED_REPO,
+              repository_id: process.env.EXPECTED_REPO_ID,
+              repository_owner_id: process.env.EXPECTED_OWNER_ID,
+              ref: 'refs/heads/main',
+              event_name: 'workflow_dispatch'
+            };
+            for (const [key, value] of Object.entries(expected)) {
+              if (String(claims[key]) !== value) throw Error('OIDC identity mismatch: ' + key);
+            }
+            if (!Number.isInteger(claims.exp) || claims.exp <= Math.floor(Date.now()/1000)) throw Error('Expired OIDC token');
+            console.log('GitHub issued an OIDC token with expected main-branch identity. No token or model contents were logged.');
+            console.log('Site-to-GitHub authentication remains untested; do not infer Site support from this check.');
+          })().catch(error => { console.error(error.message); process.exitCode = 1; });
+          NODE
