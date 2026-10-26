@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {generateKeyPairSync, sign, webcrypto} from 'node:crypto';
-import {authorize} from './rufus-model-bridge.mjs';
+import bridge, {authorize} from './rufus-model-bridge.mjs';
 
 Object.defineProperty(globalThis, 'crypto', {value:webcrypto, configurable:true});
 const {privateKey, publicKey} = generateKeyPairSync('rsa',{modulusLength:2048});
@@ -54,4 +54,36 @@ for(const [name,value] of Object.entries({
 test('denies JWKS outage and oversized token lifetimes',async()=>{
   assert.equal(await authorize(token(),async()=>({ok:false}),now),false);
   assert.equal(await authorize(token({...good,exp:now+1000}),keyFetch,now),false);
+});
+
+test('bridge is disabled and never reads R2 without explicit enablement',async()=>{
+  const calls=[];
+  const env={RUFUS_MODELS:{get:async key=>{calls.push(key);return {body:new Uint8Array([1,2,3])}}}};
+  const response=await bridge.fetch(new Request('https://bridge.example/private-model',{headers:{authorization:'Bearer '+token()}}),env);
+  assert.equal(response.status,503);
+  assert.deepEqual(calls,[]);
+});
+test('bridge rejects unauthenticated or wrong workflow before reading R2',async()=>{
+  const calls=[];
+  const env={MODEL_ACCESS_ENABLED:'true',RUFUS_MODELS:{get:async key=>{calls.push(key);return {body:new Uint8Array([1,2,3])}}}};
+  const previous=globalThis.fetch;globalThis.fetch=keyFetch;
+  try {
+    assert.equal((await bridge.fetch(new Request('https://bridge.example/private-model'),env)).status,403);
+    assert.equal((await bridge.fetch(new Request('https://bridge.example/other'),env)).status,404);
+    assert.equal((await bridge.fetch(new Request('https://bridge.example/private-model',{method:'POST'}),env)).status,404);
+    assert.equal((await bridge.fetch(new Request('https://bridge.example/private-model',{headers:{authorization:'Bearer '+token({...good,ref:'refs/heads/evil'})}}),env)).status,403);
+    assert.deepEqual(calls,[]);
+  } finally {globalThis.fetch=previous}
+});
+test('bridge serves only fixed R2 object to signed authorized run',async()=>{
+  const calls=[], bytes=new Uint8Array([0x67,0x6c,0x54,0x46]);
+  const env={MODEL_ACCESS_ENABLED:'true',RUFUS_MODELS:{get:async key=>{calls.push(key);return {body:bytes}}}};
+  const previous=globalThis.fetch;globalThis.fetch=keyFetch;
+  try {
+    const response=await bridge.fetch(new Request('https://bridge.example/private-model?key=another-file',{headers:{authorization:'Bearer '+token()}}),env);
+    assert.equal(response.status,200);
+    assert.equal(response.headers.get('cache-control'),'private, no-store');
+    assert.deepEqual(new Uint8Array(await response.arrayBuffer()),bytes);
+    assert.deepEqual(calls,['licensed/rufus-original.glb']);
+  } finally {globalThis.fetch=previous}
 });
