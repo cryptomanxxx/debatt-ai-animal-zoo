@@ -26,7 +26,7 @@ jobs:
       - name: Repair weights and export GLB candidate
         run: |
           mkdir -p dist/rufus
-          blender --background --factory-startup --threads 2 \
+          blender --background --factory-startup --threads 2 --python-exit-code 1 \
             --python scripts/rig_rufus.py -- \
             assets/rufus/source.glb dist/rufus/rufus-rigged.glb
       - name: Upload candidate for inspection
