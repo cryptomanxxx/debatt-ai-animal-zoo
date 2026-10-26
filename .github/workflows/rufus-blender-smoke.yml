@@ -1,0 +1,33 @@
+name: Rufus Blender smoke test
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - ".github/workflows/rufus-blender-smoke.yml"
+      - "scripts/blender_smoke.py"
+
+permissions:
+  contents: read
+
+jobs:
+  blender-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install headless Blender and GLB exporter dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends blender python3-numpy
+          blender --version
+      - name: Verify synthetic GLB and facial morph roundtrip
+        run: |
+          blender --background --factory-startup --python-exit-code 1 --python scripts/blender_smoke.py -- --output dist/blender-smoke
+      - name: Upload safe smoke report only
+        uses: actions/upload-artifact@v4
+        with:
+          name: blender-smoke-report
+          path: dist/blender-smoke/report.json
+          retention-days: 7
+          if-no-files-found: error
