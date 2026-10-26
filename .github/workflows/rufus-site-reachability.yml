@@ -1,0 +1,39 @@
+name: Check private Site machine access
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/rufus-site-reachability.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Check if the owner-private Site is reachable without credentials
+        env:
+          SITE_URL: https://rufus-3d-preview-20261025.rarecod10.chatgpt.site/api/status
+        run: |
+          set -euo pipefail
+          # Never request /rufus.glb here. Do not use cookies, tokens or redirect
+          # following, and never print the response body or response headers.
+          code="$(curl --silent --show-error --output /dev/null --max-time 15 --write-out '%{http_code}' "$SITE_URL")"
+          case "$code" in
+            200)
+              echo "::warning::A GitHub runner reached /api/status without owner authentication. This does not grant GLB access; examine the public routing boundary before building OIDC."
+              ;;
+            301|302|303|307|308|401|403)
+              echo "The Site access boundary blocks or redirects an unauthenticated GitHub runner (HTTP $code)."
+              ;;
+            000)
+              echo "::error::GitHub runner could not reach Site."
+              exit 1
+              ;;
+            *)
+              echo "::warning::Unexpected Site response HTTP $code. Review the access boundary."
+              ;;
+          esac
