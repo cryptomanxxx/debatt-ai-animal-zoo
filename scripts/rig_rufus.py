@@ -30,7 +30,8 @@ def assert_skin(mesh):
             name = mesh.vertex_groups[group.group].name
             counts[name] = counts.get(name, 0) + 1
     n = len(mesh.data.vertices)
-    hip_dominant = sum(1 for vertex in mesh.data.vertices if vertex.groups and\n                       mesh.vertex_groups[max(vertex.groups, key=lambda g: g.weight).group].name.endswith("Hips"))
+    hip_dominant = sum(1 for vertex in mesh.data.vertices if vertex.groups and
+                       mesh.vertex_groups[max(vertex.groups, key=lambda g: g.weight).group].name.endswith("Hips"))
     meaningful = [name for name, value in counts.items() if value >= max(10, n * 0.005)]
     summary = {
         "vertices": n,
