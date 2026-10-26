@@ -1,0 +1,24 @@
+name: Rufus Sites OIDC verifier tests
+
+on:
+  pull_request:
+    paths:
+      - 'security/rufus-sites-oidc-verifier*.mjs'
+      - '.github/workflows/rufus-sites-verifier-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'security/rufus-sites-oidc-verifier*.mjs'
+      - '.github/workflows/rufus-sites-verifier-tests.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify OIDC signatures and rejection cases (synthetic tokens only)
+        run: node --test security/rufus-sites-oidc-verifier.test.mjs
