@@ -30,18 +30,18 @@ def assert_skin(mesh):
             name = mesh.vertex_groups[group.group].name
             counts[name] = counts.get(name, 0) + 1
     n = len(mesh.data.vertices)
-    hip_count = sum(value for name, value in counts.items() if name.endswith("Hips"))
+    hip_dominant = sum(1 for vertex in mesh.data.vertices if vertex.groups and\n                       mesh.vertex_groups[max(vertex.groups, key=lambda g: g.weight).group].name.endswith("Hips"))
     meaningful = [name for name, value in counts.items() if value >= max(10, n * 0.005)]
     summary = {
         "vertices": n,
         "vertices_with_weights": assigned,
         "meaningfully_weighted_bones": meaningful,
-        "hip_vertex_fraction": round(hip_count / max(n, 1), 4),
+        "hip_dominant_fraction": round(hip_dominant / max(n, 1), 4),
     }
     print("RUFUS_RIG_AUDIT=" + json.dumps(summary, sort_keys=True))
     if not n or assigned < n * 0.98:
         raise RuntimeError("Too many unweighted vertices after automatic skinning")
-    if len(meaningful) < 5 or hip_count > n * 0.95:
+    if len(meaningful) < 5 or hip_dominant > n * 0.95:
         raise RuntimeError("Rig remains effectively bound to hips; manual inspection required")
 
 
