@@ -39,8 +39,8 @@ function claimsAllowed(c, now, expectedSubject) {
  * fetchJwks is a trusted, server-side fetch implementation; URL is fixed.
  * Does not replace owner-login or authorize model retrieval.
  */
-export async function verifyGithubOidc(token, {enabled = false, expectedSubject, fetchJwks, subtle = globalThis.crypto?.subtle, now = Math.floor(Date.now()/1000)} = {}) {
-  if (enabled !== true || typeof token !== 'string' || token.length > 12000 || typeof fetchJwks !== 'function' || !subtle) return false;
+export async function verifyGithubOidc(token, {enabled = false, expectedSubject, fetchJwks, subtle = globalThis.crypto?.subtle, clock = () => Math.floor(Date.now()/1000), timeoutMs = 5000} = {}) {
+  if (enabled !== true || typeof token !== 'string' || token.length > 12000 || typeof fetchJwks !== 'function' || !subtle || typeof clock !== 'function' || !Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 5000) return false;
   try {
     const parts = token.split('.');
     if (parts.length !== 3) return false;
@@ -49,14 +49,33 @@ export async function verifyGithubOidc(token, {enabled = false, expectedSubject,
     const claims = json(decode(p));
     if (!header || header.alg !== 'RS256' || typeof header.kid !== 'string' || header.kid.length > 180) return false;
     if ('jku' in header || 'x5u' in header || 'crit' in header || 'jwk' in header) return false;
-    if (!claimsAllowed(claims, now, expectedSubject)) return false;
-    const response = await fetchJwks(JWKS_URL);
-    if (!response?.ok) return false;
-    const keys = await response.json();
+    if (!claimsAllowed(claims, clock(), expectedSubject)) return false;
+    // Bound both the HTTP request and JSON body read under ONE deadline.
+    const controller = new AbortController();
+    let timeout;
+    let keys;
+    try {
+      const deadline = new Promise((_, reject) => {
+        timeout = setTimeout(() => { controller.abort(); reject(new Error('JWKS timeout')); }, timeoutMs);
+      });
+      keys = await Promise.race([
+        (async () => {
+          const response = await fetchJwks(JWKS_URL, {signal:controller.signal});
+          if (!response?.ok) throw new Error('JWKS unavailable');
+          return response.json();
+        })(),
+        deadline
+      ]);
+    } finally {
+      clearTimeout(timeout);
+      controller.abort();
+    }
     if (!Array.isArray(keys?.keys) || keys.keys.length > 100) return false;
     const k = keys.keys.find(item => item.kid === header.kid && item.kty === 'RSA' && item.use === 'sig' && item.alg === 'RS256');
     if (!k || typeof k.n !== 'string' || typeof k.e !== 'string') return false;
     const publicKey = await subtle.importKey('jwk',{kty:'RSA',n:k.n,e:k.e,alg:'RS256',ext:true,key_ops:['verify']},{name:'RSASSA-PKCS1-v1_5',hash:'SHA-256'},false,['verify']);
-    return Boolean(await subtle.verify('RSASSA-PKCS1-v1_5',publicKey,decode(s),new TextEncoder().encode(h+'.'+p)));
+    const validSignature = await subtle.verify('RSASSA-PKCS1-v1_5',publicKey,decode(s),new TextEncoder().encode(h+'.'+p));
+    // A token can expire during the asynchronous JWKS fetch or crypto operation.
+    return Boolean(validSignature && claimsAllowed(claims, clock(), expectedSubject));
   } catch { return false; }
 }
