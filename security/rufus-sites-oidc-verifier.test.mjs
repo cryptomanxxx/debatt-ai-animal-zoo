@@ -24,7 +24,7 @@ const token=(c=claims,header={})=>{
  const data=encode({alg:'RS256',kid:'test',...header})+'.'+encode(c);
  return data+'.'+sign('RSA-SHA256',Buffer.from(data),privateKey).toString('base64url');
 };
-const options={enabled:true,expectedSubject:claims.sub,fetchJwks,subtle:webcrypto.subtle,now};
+const options={enabled:true,expectedSubject:claims.sub,fetchJwks,subtle:webcrypto.subtle,clock:()=>now};
 test('disabled by default, and missing configured subject is rejected',async()=>{
  assert.equal(await verifyGithubOidc(token(),{...options,expectedSubject:undefined}),false);
  assert.equal(await verifyGithubOidc(token(),{...options,enabled:false}),false);
@@ -50,4 +50,43 @@ test('rejects wrong or manipulated credentials',async()=>{
 });
 test('fails closed if GitHub JWKS unavailable',async()=>{
  assert.equal(await verifyGithubOidc(token(),{...options,fetchJwks:async()=>({ok:false})}),false);
+});
+
+test('P2: times out stalled JWKS fetch and aborts its signal',async()=>{
+ let signal;
+ const started=Date.now();
+ const accepted=await verifyGithubOidc(token(),{
+  ...options,timeoutMs:25,fetchJwks:async (_url, opts)=>{
+    signal=opts.signal;
+    return new Promise(()=>{});
+  }
+ });
+ assert.equal(accepted,false);
+ assert.equal(signal.aborted,true);
+ assert.ok(Date.now()-started<1000);
+});
+test('P2: times out when JWKS response body never completes',async()=>{
+ const started=Date.now();
+ const accepted=await verifyGithubOidc(token(),{
+  ...options,timeoutMs:25,fetchJwks:async()=>({ok:true,json:async()=>new Promise(()=>{})})
+ });
+ assert.equal(accepted,false);
+ assert.ok(Date.now()-started<1000);
+});
+test('P2: token expiring during JWKS retrieval is denied after crypto verification',async()=>{
+ let current=now;
+ const expiring=token({...claims,iat:now-80,exp:now+1});
+ const accepted=await verifyGithubOidc(expiring,{
+  ...options,clock:()=>current,
+  fetchJwks:async()=>{current=now+2;return {ok:true,json:async()=>({keys:[jwk]})};}
+ });
+ assert.equal(accepted,false);
+});
+test('P2: clock progressing but token still valid is accepted',async()=>{
+ let current=now;
+ const accepted=await verifyGithubOidc(token(),{
+  ...options,clock:()=>current,
+  fetchJwks:async()=>{current=now+2;return {ok:true,json:async()=>({keys:[jwk]})};}
+ });
+ assert.equal(accepted,true);
 });
