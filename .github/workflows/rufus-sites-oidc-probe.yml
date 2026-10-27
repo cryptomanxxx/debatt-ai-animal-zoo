@@ -52,11 +52,18 @@ jobs:
               repository_id: process.env.EXPECTED_REPO_ID,
               repository_owner_id: process.env.EXPECTED_OWNER_ID,
               ref: 'refs/heads/main',
-              event_name: 'workflow_dispatch'
+              event_name: 'workflow_dispatch',
+              workflow_ref: 'cryptomanxxx/debatt-ai-animal-zoo/.github/workflows/rufus-sites-oidc-probe.yml@refs/heads/main'
             };
             for (const [key, value] of Object.entries(expected)) {
               if (String(claims[key]) !== value) throw Error('OIDC identity mismatch: ' + key);
             }
+            // Compare with documented immutable-ID subject without ever printing JWT or sub.
+            const expectedSubject = 'repo:cryptomanxxx@48676920/debatt-ai-animal-zoo@1433538997:ref:refs/heads/main';
+            const legacySubject = 'repo:cryptomanxxx/debatt-ai-animal-zoo:ref:refs/heads/main';
+            if (claims.sub === expectedSubject) console.log('OIDC subject matched immutable-ID format.');
+            else if (claims.sub === legacySubject) console.log('OIDC subject matched legacy format; Sites configuration must be adjusted.');
+            else throw Error('Unexpected OIDC subject format; stop before enabling Sites access');
             if (!Number.isInteger(claims.exp) || claims.exp <= Math.floor(Date.now()/1000)) throw Error('Expired OIDC token');
             console.log('GitHub issued an OIDC token with expected main-branch identity. No token or model contents were logged.');
             console.log('Site-to-GitHub authentication remains untested; do not infer Site support from this check.');
