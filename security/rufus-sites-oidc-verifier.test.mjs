@@ -15,8 +15,8 @@ const claims={
  repository:'cryptomanxxx/debatt-ai-animal-zoo',repository_id:'1433538997',
  repository_owner_id:'48676920',actor_id:'48676920',ref:'refs/heads/main',
  event_name:'workflow_dispatch',runner_environment:'github-hosted',
- workflow_ref:'cryptomanxxx/debatt-ai-animal-zoo/.github/workflows/rufus-private-blender.yml@refs/heads/main',
- sub:'repo:cryptomanxxx/debatt-ai-animal-zoo:ref:refs/heads/main',
+ workflow_ref:'cryptomanxxx/debatt-ai-animal-zoo/.github/workflows/rufus-sites-oidc-probe.yml@refs/heads/main',
+ sub:'repo:cryptomanxxx@48676920/debatt-ai-animal-zoo@1433538997:ref:refs/heads/main',
  run_id:'123',iat:now,exp:now+180
 };
 const encode=x=>Buffer.from(JSON.stringify(x)).toString('base64url');
@@ -24,8 +24,8 @@ const token=(c=claims,header={})=>{
  const data=encode({alg:'RS256',kid:'test',...header})+'.'+encode(c);
  return data+'.'+sign('RSA-SHA256',Buffer.from(data),privateKey).toString('base64url');
 };
-const options={enabled:true,fetchJwks,subtle:webcrypto.subtle,now};
-test('disabled by default, even for a valid signature',async()=>{
+const options={enabled:true,expectedSubject:claims.sub,fetchJwks,subtle:webcrypto.subtle,now};
+test('disabled by default, and missing configured subject is rejected',async()=>{\n assert.equal(await verifyGithubOidc(token(),{...options,expectedSubject:undefined}),false);
  assert.equal(await verifyGithubOidc(token(),{...options,enabled:false}),false);
  assert.equal(await verifyGithubOidc(token()),false);
 });
@@ -37,7 +37,7 @@ test('rejects wrong or manipulated credentials',async()=>{
  assert.equal(await verifyGithubOidc('bad',options),false);
  const t=token();const [h,p,s]=t.split('.');
  assert.equal(await verifyGithubOidc(h+'.'+p+'.'+s.slice(0,-2)+'xx',options),false);
- assert.equal(await verifyGithubOidc(token({...claims,repository:'other/repo'}),options),false);
+ assert.equal(await verifyGithubOidc(token({...claims,repository:'other/repo'}),options),false);\n assert.equal(await verifyGithubOidc(token({...claims,sub:'repo:cryptomanxxx/debatt-ai-animal-zoo:ref:refs/heads/main'}),options),false);
  assert.equal(await verifyGithubOidc(token({...claims,ref:'refs/heads/feature'}),options),false);
  assert.equal(await verifyGithubOidc(token({...claims,workflow_ref:'other'}),options),false);
  assert.equal(await verifyGithubOidc(token({...claims,aud:'wrong'}),options),false);
