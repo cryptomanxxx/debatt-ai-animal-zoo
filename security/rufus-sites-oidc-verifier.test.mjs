@@ -25,7 +25,8 @@ const token=(c=claims,header={})=>{
  return data+'.'+sign('RSA-SHA256',Buffer.from(data),privateKey).toString('base64url');
 };
 const options={enabled:true,expectedSubject:claims.sub,fetchJwks,subtle:webcrypto.subtle,now};
-test('disabled by default, and missing configured subject is rejected',async()=>{\n assert.equal(await verifyGithubOidc(token(),{...options,expectedSubject:undefined}),false);
+test('disabled by default, and missing configured subject is rejected',async()=>{
+ assert.equal(await verifyGithubOidc(token(),{...options,expectedSubject:undefined}),false);
  assert.equal(await verifyGithubOidc(token(),{...options,enabled:false}),false);
  assert.equal(await verifyGithubOidc(token()),false);
 });
@@ -37,7 +38,8 @@ test('rejects wrong or manipulated credentials',async()=>{
  assert.equal(await verifyGithubOidc('bad',options),false);
  const t=token();const [h,p,s]=t.split('.');
  assert.equal(await verifyGithubOidc(h+'.'+p+'.'+s.slice(0,-2)+'xx',options),false);
- assert.equal(await verifyGithubOidc(token({...claims,repository:'other/repo'}),options),false);\n assert.equal(await verifyGithubOidc(token({...claims,sub:'repo:cryptomanxxx/debatt-ai-animal-zoo:ref:refs/heads/main'}),options),false);
+ assert.equal(await verifyGithubOidc(token({...claims,repository:'other/repo'}),options),false);
+ assert.equal(await verifyGithubOidc(token({...claims,sub:'repo:cryptomanxxx/debatt-ai-animal-zoo:ref:refs/heads/main'}),options),false);
  assert.equal(await verifyGithubOidc(token({...claims,ref:'refs/heads/feature'}),options),false);
  assert.equal(await verifyGithubOidc(token({...claims,workflow_ref:'other'}),options),false);
  assert.equal(await verifyGithubOidc(token({...claims,aud:'wrong'}),options),false);
